@@ -1,20 +1,49 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { StyleSheet } from 'react-native';
+
+// LIB IMPORTS //
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { PaperProvider } from 'react-native-paper';
+
+// PAGE IMPORTS //
+import HomeScreen from './Home';
+import Signup from './Signup';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+    return (
+        <PaperProvider>
+            <NavigationContainer>
+                <Stack.Navigator >
+                    <Stack.Screen name="Home" component={HomeScreen}
+                        options={styles.header} />
+                    <Stack.Screen name="Signup" component={Signup} options={styles.headerWithNav} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </PaperProvider>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    header: {
+        headerStyle: {
+            backgroundColor: '#F1E6E0',
+        },
+        headerShown: false,
+    },
+
+    headerWithNav: {
+        headerStyle: {
+            backgroundColor: '#F1E6E0',
+        },
+        // headerShown: false,
+        headerShadowVisible: false,
+        headerBackTitleVisible: true,
+        headerTintColor: '#F19336',
+        title: null,
+    }
+
+})
