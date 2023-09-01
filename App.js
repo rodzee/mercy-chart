@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 
 // LIB IMPORTS //
@@ -7,8 +7,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PaperProvider } from 'react-native-paper';
 
 // PAGE IMPORTS //
-import HomeScreen from './Home';
-import Signup from './Signup';
+import HomeScreen from './app/Home';
+import Signup from './app/Signup';
 
 const Stack = createNativeStackNavigator();
 
