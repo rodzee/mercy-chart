@@ -1,6 +1,6 @@
 import React from 'react';
 import {makeAutoObservable} from 'mobx';
-import {FIREBASE_AUTH } from "../config/firebase.config";
+import { FIREBASE_AUTH } from "../config/firebase.config";
 import {
     signOut,
     signInWithEmailAndPassword,
@@ -8,10 +8,12 @@ import {
 } from 'firebase/auth';
 
 class AuthenticationStore {
+    currentUser = null;
     name = '';
     email = '';
     password = '';
     passwordConfirmation = '';
+    isSignedIn = false;
     signInFailed = false;
     signUpFailed = false;
     errorMessage = '';
@@ -35,12 +37,14 @@ class AuthenticationStore {
     signIn = async (email, password) => {
         try {
             const response = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
-            console.log(response)
+            this.handleChangeAuthenticationStore('currentUser', response.user)
+            this.handleChangeAuthenticationStore('isSignedIn', true)
             this.handleChangeAuthenticationStore('signInFailed', false)
             return response;
         } catch (error) {
-            console.log(error)
+            console.log('error', error)
             this.handleChangeAuthenticationStore('signInFailed', true)
+            this.handleChangeAuthenticationStore('isSignedIn', false)
             this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
         } finally {
             console.log('signed in')
@@ -51,12 +55,11 @@ class AuthenticationStore {
         try {
             const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
             this.handleChangeAuthenticationStore('signUpFailed', false)
-            console.log('reponse', response)
+            this.handleChangeAuthenticationStore('isSignedIn', true)
         } catch (error) {
-            console.log('error', error)
             this.handleChangeAuthenticationStore('signUpFailed', true)
+            this.handleChangeAuthenticationStore('isSignedIn', false)
             this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
-            console.log('>>>', this.ERRORS[error.code])
         } finally {
             console.log('finally signed up')
         }
@@ -64,11 +67,11 @@ class AuthenticationStore {
 
     signOut = async () => {
         try {
-            const response = await signOut(FIREBASE_AUTH)
-            console.log(response)
+            await signOut(FIREBASE_AUTH)
+            this.handleChangeAuthenticationStore('isSignedIn', false)
         } catch (error) {
-            console.log(error)
-            // this.handleChangeAuthenticationStore('errorMessage', error)
+            this.handleChangeAuthenticationStore('isSignedIn', true)
+            console.log('error', error)
         } finally {
             console.log('signed out')
         }

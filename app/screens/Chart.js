@@ -2,26 +2,19 @@ import * as React from 'react';
 import {observer} from "mobx-react";
 import { StyleSheet, View, } from 'react-native';
 
-import { useAuthenticationStore } from "../stores/AuthenticationStore";
-import {
-    PaperProvider,
-    Button,
-    Text,
-    TextInput,
-    HelperText
-} from 'react-native-paper';
+import { PaperProvider, Text } from 'react-native-paper';
 
-const ParentDashboard = ({ navigation }) => {
+const Chart = ({ navigation }) => {
     return (
         <PaperProvider>
             <View style={{ flex: 1, backgroundColor: '#F1E6E0' }}>
-                <Text variant="displaySmall" style={styles.header}>Parent Dashboard</Text>
+                <Text variant="displaySmall" style={styles.header}>Chart</Text>
             </View>
         </PaperProvider>
     );
 }
 
-export default observer(ParentDashboard);
+export default observer(Chart);
 
 const styles = StyleSheet.create({
     header: {

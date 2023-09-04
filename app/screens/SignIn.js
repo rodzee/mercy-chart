@@ -21,13 +21,6 @@ const SignIn = ({ navigation }) => {
         handleChangeAuthenticationStore,
     } = useAuthenticationStore();
 
-    const onSignIn = async () => {
-        const response = await signIn(email, password);
-        if (response) {
-            navigation.navigate('ParentDashboard')
-        }
-    }
-
     return (
         <PaperProvider>
             <View style={{ flex: 1, backgroundColor: '#F1E6E0' }}>
@@ -68,7 +61,7 @@ const SignIn = ({ navigation }) => {
                         buttonColor='#F19336'
                         labelStyle={{ fontWeight: 700, fontSize: 20 }}
                         style={{ marginTop: 20 }}
-                        onPress={() => onSignIn()}>
+                        onPress={() => signIn(email, password)}>
                         Sign In
                     </Button>
 
