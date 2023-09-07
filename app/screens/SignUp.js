@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, View, } from 'react-native';
-import {observer} from "mobx-react";
+import { observer } from "mobx-react";
 
-import {PaperProvider, Button, IconButton, Text, TextInput, HelperText} from 'react-native-paper';
-import {useAuthenticationStore} from "../stores/AuthenticationStore";
+import { PaperProvider, Button, IconButton, Text, TextInput, HelperText } from 'react-native-paper';
+import { useAuthenticationStore } from "../stores/AuthenticationStore";
 
 const SignUp = ({ navigation }) => {
     const {
@@ -25,10 +25,9 @@ const SignUp = ({ navigation }) => {
 
     return (
         <PaperProvider>
-            <View style={{ flex: 1, backgroundColor: '#F1E6E0' }}>
-                <Text variant="displaySmall" style={styles.logo}>Sign Up</Text>
-
+            <View style={styles.root}>
                 <View style={styles.container}>
+                    <Text variant="displaySmall" style={styles.header}>Sign Up</Text>
                     <TextInput
                         mode='outlined'
                         label="Email"
@@ -36,7 +35,7 @@ const SignUp = ({ navigation }) => {
                         onChangeText={email => handleChangeAuthenticationStore('email', email)}
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
                         selectionColor='#F19336'
-                        style={{ marginBottom: 5 }}
+                        style={{ marginBottom: 10 }}
                     />
                     <TextInput
                         mode='outlined'
@@ -45,7 +44,7 @@ const SignUp = ({ navigation }) => {
                         secureTextEntry
                         onChangeText={password => handleChangeAuthenticationStore('password', password)}
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
-                        style={{ marginBottom: 5 }}
+                        style={{ marginBottom: 10 }}
                     />
                     <TextInput
                         mode='outlined'
@@ -60,27 +59,27 @@ const SignUp = ({ navigation }) => {
                         {errorMessage}
                     </HelperText>
 
-                    <Button
-                        mode="contained"
-                        buttonColor='#F19336'
-                        labelStyle={{ fontWeight: 700, fontSize: 20 }}
-                        style={{ marginTop: 20 }}
-                        onPress={() => onSignUp()}>
-                        Sign Up
-                    </Button>
-
                     <View style={styles.termsContainer}>
                         <IconButton
                             icon='checkbox-outline'
                             iconColor='#F19336'
-                            style={{ alignSelf: 'flex-start' }}
                         />
                         <Text style={styles.termsTxt}>
                             By signing up you accept the Terms of Service and Privacy Policy
                         </Text>
                     </View>
+
+                    <Button
+                        mode="contained"
+                        buttonColor='#F19336'
+                        labelStyle={{ fontWeight: 700, fontSize: 16 }}
+                        style={{ marginTop: 20 }}
+                        onPress={() => onSignUp()}>
+                        Sign Up
+                    </Button>
+
                     <View style={styles.bottomTxtContainer}>
-                        <Text style={{ fontWeight: 700, color: '#757575' }}>
+                        <Text style={{ color: '#757575' }}>
                             Already have an account?
                         </Text>
 
@@ -88,7 +87,7 @@ const SignUp = ({ navigation }) => {
                             mode="text"
                             textColor='#F19336'
                             compact
-                            labelStyle={{ fontWeight: 700, alignSelf: 'flex-end', }}
+                            labelStyle={{ fontWeight: 'bold', alignSelf: 'flex-end', }}
                             onPress={() => navigation.navigate('SignIn')}>
                             Sign In
                         </Button>
@@ -102,20 +101,22 @@ const SignUp = ({ navigation }) => {
 export default observer(SignUp)
 
 const styles = StyleSheet.create({
+    root: {
+        flex: 1,
+        backgroundColor: '#F1E6E0',
+        justifyContent: 'center'
+    },
     container: {
-        flex: 5,
         margin: 30,
     },
-    logo: {
-        flex: 1,
-        paddingTop: '30%',
-        textAlign: 'center',
-        fontWeight: 600,
-        color: '#F19336',
+    header: {
+        paddingBottom: '5%',
+        textAlign: 'left',
+        fontWeight: 'bold',
+        color: '#757575',
     },
     termsContainer: {
         flexDirection: 'row',
-        height: 60,
     },
     termsTxt: {
         flex: 1, flexWrap: 'wrap',
@@ -126,6 +127,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         alignSelf: 'center',
-        marginTop: 25
     }
 })

@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import {observer} from "mobx-react";
+import { observer } from "mobx-react";
 
 // LIB IMPORTS //
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,7 +11,7 @@ import { PaperProvider } from 'react-native-paper';
 import SignUp from './app/screens/SignUp';
 import SignIn from "./app/screens/SignIn";
 import NavigationBar from "./app/components/NavigationBar";
-import {useAuthenticationStore} from "./app/stores/AuthenticationStore";
+import { useAuthenticationStore } from "./app/stores/AuthenticationStore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Stack = createNativeStackNavigator();
