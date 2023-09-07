@@ -1,5 +1,5 @@
-import * as React from 'react';
-import {observer} from "mobx-react";
+import React, { useCallback } from 'react';
+import { observer } from "mobx-react";
 import { StyleSheet, View, } from 'react-native';
 
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
@@ -10,6 +10,7 @@ import {
     TextInput,
     HelperText
 } from 'react-native-paper';
+
 
 const SignIn = ({ navigation }) => {
     const {
@@ -23,10 +24,9 @@ const SignIn = ({ navigation }) => {
 
     return (
         <PaperProvider>
-            <View style={{ flex: 1, backgroundColor: '#F1E6E0' }}>
-                <Text variant="displaySmall" style={styles.header}>Sign In</Text>
-
+            <View style={styles.root}>
                 <View style={styles.container}>
+                    <Text variant="displaySmall" style={styles.header}>Sign In</Text>
                     <TextInput
                         mode='outlined'
                         label="Email"
@@ -34,7 +34,7 @@ const SignIn = ({ navigation }) => {
                         onChangeText={email => handleChangeAuthenticationStore('email', email)}
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
                         selectionColor='#F19336'
-                        style={{ marginBottom: 5 }}
+                        style={{ marginBottom: 10 }}
                     />
                     <TextInput
                         mode='outlined'
@@ -46,8 +46,9 @@ const SignIn = ({ navigation }) => {
                     />
                     <Button
                         mode="text"
+                        compact={true}
                         textColor='#757575'
-                        style={{ alignSelf: 'flex-end' }}
+                        style={{ alignSelf: 'flex-end', }}
                         onPress={() => navigation.navigate('')}>
                         Forgot Password?
                     </Button>
@@ -59,21 +60,21 @@ const SignIn = ({ navigation }) => {
                     <Button
                         mode="contained"
                         buttonColor='#F19336'
-                        labelStyle={{ fontWeight: 700, fontSize: 20 }}
-                        style={{ marginTop: 20 }}
+                        labelStyle={{ fontWeight: 'bold', fontSize: 16 }}
+                        style={{ marginTop: 20, paddingVertical: 3 }}
                         onPress={() => signIn(email, password)}>
                         Sign In
                     </Button>
 
                     <View style={styles.bottomTxtContainer}>
-                        <Text style={{ fontWeight: 700, color: '#757575' }}>
+                        <Text style={{ color: '#757575' }}>
                             Don't have an account yet?
                         </Text>
                         <Button
                             mode="text"
                             textColor='#F19336'
                             compact
-                            labelStyle={{ fontWeight: 700, alignSelf: 'flex-end', }}
+                            labelStyle={{ fontWeight: 700, }}
                             onPress={() => navigation.navigate('SignUp')}>
                             Sign Up
                         </Button>
@@ -87,21 +88,23 @@ const SignIn = ({ navigation }) => {
 export default observer(SignIn);
 
 const styles = StyleSheet.create({
+    root: {
+        flex: 1,
+        backgroundColor: '#F1E6E0',
+        justifyContent: 'center'
+    },
     container: {
-        flex: 3,
         margin: 30,
     },
     header: {
-        flex: 1,
-        paddingTop: '40%',
-        textAlign: 'center',
-        fontWeight: 600,
-        color: '#F19336',
+        paddingBottom: '5%',
+        textAlign: 'left',
+        fontWeight: 'bold',
+        color: '#757575',
     },
     bottomTxtContainer: {
         alignItems: 'center',
         flexDirection: 'row',
         alignSelf: 'center',
-        marginTop: 90
     },
 })
