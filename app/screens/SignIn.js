@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { observer } from "mobx-react";
 import { StyleSheet, View, } from 'react-native';
 
@@ -8,11 +8,23 @@ import {
     Button,
     Text,
     TextInput,
-    HelperText
+    HelperText,
 } from 'react-native-paper';
-
+import { useFonts } from 'expo-font';
 
 const SignIn = ({ navigation }) => {
+
+    // FONT SETUP
+    const [text, setText] = React.useState('');
+    const [fontsLoaded] = useFonts({
+        'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
+        'OpenSans-Bold': require('../../assets/fonts/OpenSans-Bold.ttf'),
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
+
     const {
         email,
         password,
@@ -31,6 +43,7 @@ const SignIn = ({ navigation }) => {
                         mode='outlined'
                         label="Email"
                         value={email}
+                        activeOutlineColor='#757575'
                         onChangeText={email => handleChangeAuthenticationStore('email', email)}
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
                         selectionColor='#F19336'
@@ -41,6 +54,8 @@ const SignIn = ({ navigation }) => {
                         label="Password"
                         value={password}
                         secureTextEntry
+                        activeOutlineColor='#757575'
+                        selectionColor='#F19336'
                         onChangeText={password => handleChangeAuthenticationStore('password', password)}
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
                     />
@@ -48,12 +63,13 @@ const SignIn = ({ navigation }) => {
                         mode="text"
                         compact={true}
                         textColor='#757575'
-                        style={{ alignSelf: 'flex-end', }}
+                        style={{ alignSelf: 'flex-end' }}
+                        labelStyle={{ fontFamily: 'OpenSans-Regular' }}
                         onPress={() => navigation.navigate('')}>
                         Forgot Password?
                     </Button>
 
-                    <HelperText type="error" visible={signInFailed}>
+                    <HelperText type="error" visible={signInFailed} style={styles.helperTxt}>
                         {errorMessage}
                     </HelperText>
 
@@ -67,14 +83,16 @@ const SignIn = ({ navigation }) => {
                     </Button>
 
                     <View style={styles.bottomTxtContainer}>
-                        <Text style={{ color: '#757575' }}>
+                        <Text
+                            style={{ color: '#757575', fontFamily: 'OpenSans-Regular' }}
+                        >
                             Don't have an account yet?
                         </Text>
                         <Button
                             mode="text"
                             textColor='#F19336'
                             compact
-                            labelStyle={{ fontWeight: 700, }}
+                            labelStyle={{ fontFamily: 'OpenSans-Bold' }}
                             onPress={() => navigation.navigate('SignUp')}>
                             Sign Up
                         </Button>
@@ -99,8 +117,13 @@ const styles = StyleSheet.create({
     header: {
         paddingBottom: '5%',
         textAlign: 'left',
-        fontWeight: 'bold',
+        fontFamily: 'OpenSans-Bold',
         color: '#757575',
+    },
+    helperTxt: {
+        color: '#D92D00',
+        fontFamily: 'OpenSans-Bold',
+
     },
     bottomTxtContainer: {
         alignItems: 'center',
