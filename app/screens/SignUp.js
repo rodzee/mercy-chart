@@ -2,8 +2,9 @@ import * as React from 'react';
 import { StyleSheet, View, } from 'react-native';
 import { observer } from "mobx-react";
 
-import { PaperProvider, Button, IconButton, Text, TextInput, HelperText } from 'react-native-paper';
+import { PaperProvider, Button, Text, TextInput, HelperText, Checkbox } from 'react-native-paper';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
+import { set } from 'mobx';
 
 const SignUp = ({ navigation }) => {
     const {
@@ -23,6 +24,8 @@ const SignUp = ({ navigation }) => {
         }
     }
 
+    const [checked, setChecked] = React.useState(false);
+
     return (
         <PaperProvider>
             <View style={styles.root}>
@@ -32,9 +35,10 @@ const SignUp = ({ navigation }) => {
                         mode='outlined'
                         label="Email"
                         value={email}
-                        onChangeText={email => handleChangeAuthenticationStore('email', email)}
-                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
                         selectionColor='#F19336'
+                        activeOutlineColor='#757575'
+                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
+                        onChangeText={email => handleChangeAuthenticationStore('email', email)}
                         style={{ marginBottom: 10 }}
                     />
                     <TextInput
@@ -42,8 +46,10 @@ const SignUp = ({ navigation }) => {
                         label="Password"
                         value={password}
                         secureTextEntry
-                        onChangeText={password => handleChangeAuthenticationStore('password', password)}
+                        selectionColor='#F19336'
+                        activeOutlineColor='#757575'
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
+                        onChangeText={password => handleChangeAuthenticationStore('password', password)}
                         style={{ marginBottom: 10 }}
                     />
                     <TextInput
@@ -51,8 +57,10 @@ const SignUp = ({ navigation }) => {
                         label="Confirm Password"
                         value={passwordConfirmation}
                         secureTextEntry
-                        onChangeText={password => handleChangeAuthenticationStore('passwordConfirmation', password)}
+                        selectionColor='#F19336'
+                        activeOutlineColor='#757575'
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
+                        onChangeText={password => handleChangeAuthenticationStore('passwordConfirmation', password)}
                     />
 
                     <HelperText type="error" visible={signUpFailed}>
@@ -60,26 +68,34 @@ const SignUp = ({ navigation }) => {
                     </HelperText>
 
                     <View style={styles.termsContainer}>
-                        <IconButton
-                            icon='checkbox-outline'
-                            iconColor='#F19336'
+                        <Checkbox.Android
+                            status={checked ? 'checked' : 'unchecked'}
+                            color='#F19336'
+                            onPress={() => {
+                                setChecked(!checked)
+                            }}
                         />
-                        <Text style={styles.termsTxt}>
-                            By signing up you accept the Terms of Service and Privacy Policy
-                        </Text>
+                        <View style={styles.termsTxtContainer}>
+                            <Text style={styles.termsTxt}>
+                                By signing up you accept the
+                            </Text>
+                            <Text onPress={() => { }} style={styles.termsLink}>
+                                Terms of Service and Privacy Policy
+                            </Text>
+                        </View>
                     </View>
 
                     <Button
                         mode="contained"
                         buttonColor='#F19336'
-                        labelStyle={{ fontWeight: 700, fontSize: 16 }}
+                        labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginTop: 20 }}
                         onPress={() => onSignUp()}>
                         Sign Up
                     </Button>
 
                     <View style={styles.bottomTxtContainer}>
-                        <Text style={{ color: '#757575' }}>
+                        <Text style={{ color: '#757575', fontFamily: 'OpenSans-Regular', }}>
                             Already have an account?
                         </Text>
 
@@ -87,7 +103,7 @@ const SignUp = ({ navigation }) => {
                             mode="text"
                             textColor='#F19336'
                             compact
-                            labelStyle={{ fontWeight: 'bold', alignSelf: 'flex-end', }}
+                            labelStyle={{ fontWeight: 'bold', alignSelf: 'flex-end', fontFamily: 'OpenSans-Bold', }}
                             onPress={() => navigation.navigate('SignIn')}>
                             Sign In
                         </Button>
@@ -114,14 +130,23 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontWeight: 'bold',
         color: '#757575',
+        fontFamily: 'OpenSans-Bold'
     },
     termsContainer: {
         flexDirection: 'row',
     },
+    termsTxtContainer: {
+        paddingTop: 10,
+        gap: -5,
+    },
     termsTxt: {
-        flex: 1, flexWrap: 'wrap',
-        alignSelf: 'center',
-        color: '#757575'
+        color: '#757575',
+        fontFamily: 'OpenSans-Regular',
+    },
+    termsLink: {
+        fontFamily: 'OpenSans-Bold',
+        marginTop: 5,
+        color: '#F19336'
     },
     bottomTxtContainer: {
         alignItems: 'center',
