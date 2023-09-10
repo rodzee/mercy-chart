@@ -21,10 +21,6 @@ const SignIn = ({ navigation }) => {
         'OpenSans-Bold': require('../../assets/fonts/OpenSans-Bold.ttf'),
     });
 
-    if (!fontsLoaded) {
-        return null;
-    }
-
     const {
         email,
         password,
@@ -33,6 +29,10 @@ const SignIn = ({ navigation }) => {
         signIn,
         handleChangeAuthenticationStore,
     } = useAuthenticationStore();
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     return (
         <PaperProvider>

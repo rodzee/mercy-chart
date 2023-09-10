@@ -12,7 +12,7 @@ class AuthenticationStore {
     name = '';
     email = '';
     password = '';
-    passwordConfirmation = '';
+    confirmPassword= '';
     isSignedIn = false;
     signInFailed = false;
     signUpFailed = false;
@@ -78,7 +78,7 @@ class AuthenticationStore {
     }
 
     passwordMatches = () => {
-        return this.password === this.passwordConfirmation;
+        return this.password === this.confirmPassword;
     }
 
     handleChangeAuthenticationStore = (key, value) => {
