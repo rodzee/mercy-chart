@@ -10,6 +10,9 @@ import { PaperProvider } from 'react-native-paper';
 // PAGE IMPORTS //
 import SignUp from './app/screens/SignUp';
 import SignIn from "./app/screens/SignIn";
+import AddCaretaker from './app/screens/AddCaretaker';
+
+// COMPONENT IMPORTS //
 import NavigationBar from "./app/components/NavigationBar";
 import { useAuthenticationStore } from "./app/stores/AuthenticationStore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -45,6 +48,7 @@ const App = () => {
                             <>
                                 <Stack.Screen name="SignIn" component={SignIn} options={styles.header} />
                                 <Stack.Screen name="SignUp" component={SignUp} options={styles.headerWithNav} />
+                                <Stack.Screen name="AddCaretaker" component={AddCaretaker} options={styles.headerWithNav} />
                             </>
                     }
                 </Stack.Navigator>
