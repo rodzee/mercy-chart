@@ -1,24 +1,21 @@
 import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
-import {observer} from "mobx-react";
-import Chart from "../screens/Chart";
-import Parent from "../screens/Parent";
-import Calendar from "../screens/Calendar";
+import { observer } from "mobx-react";
+import Home from "../screens/Home";
+import History from "../screens/History";
 import Settings from "../screens/Settings";
 
 const NavigationBar = () => {
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'chart', title: 'Chart', focusedIcon: 'gift', unfocusedIcon: 'gift-outline' },
-        { key: 'parent', title: 'Parent', focusedIcon: 'account-circle'},
-        { key: 'calendar', title: 'Calendar', focusedIcon: 'calendar' },
+        { key: 'home', title: 'Home', focusedIcon: 'gift', unfocusedIcon: 'gift-outline' },
+        { key: 'history', title: 'History', focusedIcon: 'history' },
         { key: 'settings', title: 'Settings', focusedIcon: 'cog' },
     ]);
 
     const renderScene = BottomNavigation.SceneMap({
-        chart: Chart,
-        parent: Parent,
-        calendar: Calendar,
+        home: Home,
+        history: History,
         settings: Settings,
     });
 
@@ -28,8 +25,8 @@ const NavigationBar = () => {
             onIndexChange={setIndex}
             activeColor='#F19336'
             renderScene={renderScene}
-            labeled={false}
-            barStyle={{ backgroundColor: '#FFF' }}
+            labeled={true}
+            barStyle={{ backgroundColor: '#FFF', borderTopColor: '#F1C498', borderTopWidth: 1, }}
             theme={{
                 colors: {
                     secondaryContainer: 'transparent'
