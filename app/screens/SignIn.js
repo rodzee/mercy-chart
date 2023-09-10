@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from "mobx-react";
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, } from 'react-native';
 
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import {
@@ -59,15 +59,13 @@ const SignIn = ({ navigation }) => {
                         onChangeText={password => handleChangeAuthenticationStore('password', password)}
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
                     />
-                    <Button
-                        mode="text"
-                        compact={true}
-                        textColor='#757575'
-                        style={{ alignSelf: 'flex-end' }}
-                        labelStyle={{ fontFamily: 'OpenSans-Regular' }}
-                        onPress={() => navigation.navigate('')}>
-                        Forgot Password?
-                    </Button>
+                    <TouchableOpacity>
+                        <Text
+                            style={{ alignSelf: 'flex-end', fontFamily: 'OpenSans-Regular', marginTop: 10, color: '#757575' }}
+                            onPress={() => navigation.navigate('')}>
+                            Forgot Password?
+                        </Text>
+                    </TouchableOpacity>
 
                     <HelperText type="error" visible={signInFailed} style={styles.helperTxt}>
                         {errorMessage}
