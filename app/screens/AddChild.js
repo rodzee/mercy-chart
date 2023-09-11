@@ -1,59 +1,34 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import {
     PaperProvider,
     Button,
     Text,
     TextInput,
-    HelperText,
+    Avatar,
 } from 'react-native-paper';
 
-const AddCaretaker = () => {
-    const {
-        name,
-        email,
-        emailConfirmation,
-        handleChangeAuthenticationStore,
-        errorMessage,
-    } = useAuthenticationStore();
+import TopBar from '../components/TopBar';
 
+const AddChild = () => {
     return (
         <PaperProvider>
+            <TopBar />
             <View style={styles.root}>
                 <View style={styles.container}>
-                    <Text style={styles.header}>Add Caretaker</Text>
+                    <Text style={styles.header}>Add Child</Text>
+                    <Avatar.Image
+                        size={120}
+                        style={{ alignSelf: 'center', marginBottom: 30 }}
+                        source={require('../../assets/icon.png')} />
                     <TextInput
                         mode='outlined'
                         label="Name"
-                        value={name}
                         selectionColor='#F19336'
                         activeOutlineColor='#757575'
                         outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
                         style={{ marginBottom: 10, backgroundColor: '#F5F5F5' }}
                     />
-                    <TextInput
-                        mode='outlined'
-                        label="Email"
-                        value={email}
-                        selectionColor='#F19336'
-                        activeOutlineColor='#757575'
-                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
-                        style={{ marginBottom: 10, backgroundColor: '#F5F5F5' }}
-                    />
-                    <TextInput
-                        mode='outlined'
-                        label="Confirm Email"
-                        value={emailConfirmation}
-                        selectionColor='#F19336'
-                        activeOutlineColor='#757575'
-                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
-                        style={{ backgroundColor: '#F5F5F5' }}
-                    />
-                    <HelperText type="error" >
-                        {errorMessage}
-                    </HelperText>
-
                     <Button
                         mode="contained"
                         buttonColor='#F19336'
@@ -67,7 +42,7 @@ const AddCaretaker = () => {
     )
 }
 
-export default AddCaretaker
+export default AddChild
 
 const styles = StyleSheet.create({
     root: {

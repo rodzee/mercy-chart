@@ -11,6 +11,7 @@ import { PaperProvider } from 'react-native-paper';
 import SignUp from './app/screens/SignUp';
 import SignIn from "./app/screens/SignIn";
 import AddCaretaker from './app/screens/AddCaretaker';
+import AddChild from './app/screens/AddChild';
 
 // COMPONENT IMPORTS //
 import NavigationBar from "./app/components/NavigationBar";
@@ -48,7 +49,7 @@ const App = () => {
                             <>
                                 <Stack.Screen name="SignIn" component={SignIn} options={styles.header} />
                                 <Stack.Screen name="SignUp" component={SignUp} options={styles.headerWithNav} />
-                                <Stack.Screen name="AddCaretaker" component={AddCaretaker} options={styles.headerWithNav} />
+                                <Stack.Screen name="AddCaretaker" component={AddChild} options={styles.headerWithNav} />
                             </>
                     }
                 </Stack.Navigator>
