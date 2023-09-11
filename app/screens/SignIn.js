@@ -1,8 +1,7 @@
 import React from 'react';
-import { observer } from "mobx-react";
 import { StyleSheet, TouchableOpacity, View, } from 'react-native';
+import { observer } from "mobx-react";
 
-import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import {
     PaperProvider,
     Button,
@@ -10,6 +9,10 @@ import {
     TextInput,
     HelperText,
 } from 'react-native-paper';
+
+import AddCaretaker from './AddCaretaker';
+
+import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import { useFonts } from 'expo-font';
 
 const SignIn = ({ navigation }) => {
@@ -62,7 +65,7 @@ const SignIn = ({ navigation }) => {
                     <TouchableOpacity>
                         <Text
                             style={{ alignSelf: 'flex-end', fontFamily: 'OpenSans-Regular', marginTop: 10, color: '#757575' }}
-                            onPress={() => navigation.navigate('')}>
+                            onPress={() => navigation.navigate(AddCaretaker)}>
                             Forgot Password?
                         </Text>
                     </TouchableOpacity>
