@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from "mobx-react";
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, } from 'react-native';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import {useForm} from 'react-hook-form';
 import {FormBuilder} from 'react-native-paper-form-builder';
@@ -87,15 +87,13 @@ const SignIn = ({ navigation }) => {
                             },
                         ]}
                     />
-                    <Button
-                        mode="text"
-                        compact={true}
-                        textColor='#757575'
-                        style={{ alignSelf: 'flex-end' }}
-                        labelStyle={{ fontFamily: 'OpenSans-Regular' }}
-                        onPress={() => navigation.navigate('')}>
-                        Forgot Password?
-                    </Button>
+                    <TouchableOpacity>
+                        <Text
+                            style={{ alignSelf: 'flex-end', fontFamily: 'OpenSans-Regular', marginTop: 10, color: '#757575' }}
+                            onPress={() => navigation.navigate('')}>
+                            Forgot Password?
+                        </Text>
+                    </TouchableOpacity>
 
                     <Button
                         mode="contained"
