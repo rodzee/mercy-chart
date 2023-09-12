@@ -25,6 +25,7 @@ const SignIn = ({ navigation }) => {
             password: '',
         },
         mode: 'onChange',
+        reValidateMode: 'onSubmit'
     });
 
     if (!fontsLoaded) {
