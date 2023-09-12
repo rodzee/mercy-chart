@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, View, } from 'react-native';
 import { observer } from "mobx-react";
-
 import { PaperProvider, Button, Text } from 'react-native-paper';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import {useForm} from 'react-hook-form';
 import {FormBuilder} from 'react-native-paper-form-builder';
-import CustomCheckBox from "../components/TermsOfService";
 import TermsOfService from "../components/TermsOfService";
 
 const SignUp = ({ navigation }) => {
@@ -15,9 +13,7 @@ const SignUp = ({ navigation }) => {
     const {
         control,
         setFocus,
-        handleSubmit,
-        formState: {errors}
-
+        handleSubmit
     } = useForm({
         defaultValues: {
             name: '',
@@ -26,6 +22,7 @@ const SignUp = ({ navigation }) => {
             passwordConfirmation: '',
         },
         mode: 'onChange',
+        reValidateMode: 'onSubmit'
     });
 
     const onSignUp = async (name, email, password) => {
@@ -141,7 +138,7 @@ const SignUp = ({ navigation }) => {
                         buttonColor='#F19336'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginTop: 20 }}
-                        onPress={() => handleSubmit(({name, email, password}) => {
+                        onPress={handleSubmit(({name, email, password}) => {
                             onSignUp(name, email, password)
                         })}>
                         Sign Up
