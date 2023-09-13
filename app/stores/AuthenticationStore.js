@@ -4,7 +4,8 @@ import { FIREBASE_AUTH } from "../config/firebase.config";
 import {
     signOut,
     signInWithEmailAndPassword,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    updateProfile
 } from 'firebase/auth';
 
 class AuthenticationStore {
@@ -51,11 +52,23 @@ class AuthenticationStore {
         }
     }
 
-    signUp = async (email, password) => {
+    signUp = async (name, email, password) => {
         try {
             const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
+            await updateProfile(FIREBASE_AUTH.currentUser, {
+                displayName: name,
+            }).then(() => {
+                console.log('Profile updated!')
+                // Profile updated!
+                // ...
+            }).catch((error) => {
+                console.log('An error occurred')
+                // An error occurred
+                // ...
+            });
             this.handleChangeAuthenticationStore('signUpFailed', false)
             this.handleChangeAuthenticationStore('isSignedIn', true)
+            return response;
         } catch (error) {
             this.handleChangeAuthenticationStore('signUpFailed', true)
             this.handleChangeAuthenticationStore('isSignedIn', false)
