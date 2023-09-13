@@ -13,7 +13,8 @@ const SignUp = ({ navigation }) => {
     const {
         control,
         setFocus,
-        handleSubmit
+        handleSubmit,
+        formState: {errors}
     } = useForm({
         defaultValues: {
             name: '',
@@ -129,7 +130,13 @@ const SignUp = ({ navigation }) => {
                             {
                                 name: 'termsOfService',
                                 type: 'custom',
-                                JSX: TermsOfService
+                                JSX: TermsOfService,
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'This field is required.',
+                                    },
+                                },
                             },
                         ]}
                     />
