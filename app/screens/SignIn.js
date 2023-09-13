@@ -1,66 +1,93 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, } from 'react-native';
-import { observer } from "mobx-react";
-
-import {
-    PaperProvider,
-    Button,
-    Text,
-    TextInput,
-    HelperText,
-} from 'react-native-paper';
-
-import AddCaretaker from './AddCaretaker';
-
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
+import {useForm} from 'react-hook-form';
+import {FormBuilder} from 'react-native-paper-form-builder';
+import { PaperProvider, Button, Text } from 'react-native-paper';
+import { observer } from "mobx-react";
+import AddCaretaker from './AddCaretaker';
 import { useFonts } from 'expo-font';
 
 const SignIn = ({ navigation }) => {
-
-    // FONT SETUP
-    const [text, setText] = React.useState('');
     const [fontsLoaded] = useFonts({
         'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
         'OpenSans-Bold': require('../../assets/fonts/OpenSans-Bold.ttf'),
+    });
+
+    const { signIn } = useAuthenticationStore();
+
+    const {
+        control,
+        setFocus,
+        handleSubmit,
+    } = useForm({
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+        mode: 'onChange',
+        reValidateMode: 'onSubmit'
     });
 
     if (!fontsLoaded) {
         return null;
     }
 
-    const {
-        email,
-        password,
-        signInFailed,
-        errorMessage,
-        signIn,
-        handleChangeAuthenticationStore,
-    } = useAuthenticationStore();
-
     return (
         <PaperProvider>
             <View style={styles.root}>
                 <View style={styles.container}>
                     <Text variant="displaySmall" style={styles.header}>Sign In</Text>
-                    <TextInput
-                        mode='outlined'
-                        label="Email"
-                        value={email}
-                        activeOutlineColor='#757575'
-                        onChangeText={email => handleChangeAuthenticationStore('email', email)}
-                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
-                        selectionColor='#F19336'
-                        style={{ marginBottom: 10 }}
-                    />
-                    <TextInput
-                        mode='outlined'
-                        label="Password"
-                        value={password}
-                        secureTextEntry
-                        activeOutlineColor='#757575'
-                        selectionColor='#F19336'
-                        onChangeText={password => handleChangeAuthenticationStore('password', password)}
-                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
+                    <FormBuilder
+                        control={control}
+                        setFocus={setFocus}
+                        formConfigArray={[
+                            {
+                                name: 'email',
+                                type: 'email',
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Email is required',
+                                    },
+                                    pattern: {
+                                        value:
+                                            /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
+                                        message: 'Email is invalid',
+                                    },
+                                },
+                                textInputProps: {
+                                    label: 'Email',
+                                    outlineStyle: { borderRadius: 20, borderColor: '#fff' },
+                                    selectionColor:'#F19336',
+                                    activeOutlineColor:'#757575'
+                                },
+                            },
+                            {
+                                name: 'password',
+                                type: 'password',
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Password is required',
+                                    },
+                                    minLength: {
+                                        value: 8,
+                                        message: 'Password should be atleast 8 characters',
+                                    },
+                                    maxLength: {
+                                        value: 30,
+                                        message: 'Password should be between 8 and 30 characters',
+                                    },
+                                },
+                                textInputProps: {
+                                    label: 'Password',
+                                    outlineStyle: { borderRadius: 20, borderColor: '#fff' },
+                                    selectionColor:'#F19336',
+                                    activeOutlineColor:'#757575'
+                                },
+                            },
+                        ]}
                     />
                     <TouchableOpacity>
                         <Text
@@ -70,16 +97,14 @@ const SignIn = ({ navigation }) => {
                         </Text>
                     </TouchableOpacity>
 
-                    <HelperText type="error" visible={signInFailed} style={styles.helperTxt}>
-                        {errorMessage}
-                    </HelperText>
-
                     <Button
                         mode="contained"
                         buttonColor='#F19336'
                         labelStyle={{ fontWeight: 'bold', fontSize: 16 }}
                         style={{ marginTop: 20, paddingVertical: 3 }}
-                        onPress={() => signIn(email, password)}>
+                        onPress={handleSubmit(({email, password}) => {
+                            signIn(email, password)
+                        })}>
                         Sign In
                     </Button>
 
