@@ -9,17 +9,32 @@ const Settings = ({ navigation }) => {
     const { signOut } = useAuthenticationStore();
     return (
         <PaperProvider>
-            <View style={{ flex: 1, backgroundColor: '#F1E6E0' }}>
-                <Text variant="displaySmall" style={styles.header}>Settings</Text>
-
-                <Button
-                    mode="contained"
-                    buttonColor='#F19336'
-                    labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
-                    style={{ marginHorizontal: '10%', paddingVertical: 3 }}
-                    onPress={() => signOut()}>
-                    Sign out
-                </Button>
+            <View style={styles.root}>
+                <View style={styles.container}>
+                    <View>
+                        <Button
+                            icon='chevron-right'
+                            labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 20, color: '#757575' }}
+                            contentStyle={{ flexDirection: 'row-reverse', alignSelf: 'flex-start', gap: 70 }}
+                            onPress={() => navigation.navigate('AddChild')}>
+                            Children Profiles
+                        </Button>
+                        <Button
+                            icon='chevron-right'
+                            labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 20, color: '#757575' }}
+                            contentStyle={{ flexDirection: 'row-reverse', alignSelf: 'flex-start', gap: 45 }}>
+                            Caretakers Profiles
+                        </Button>
+                    </View>
+                    <Button
+                        mode="contained"
+                        buttonColor='#D92D00'
+                        labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
+                        style={{ paddingVertical: 3 }}
+                        onPress={() => signOut()}>
+                        Sign out
+                    </Button>
+                </View>
             </View>
         </PaperProvider>
     );
@@ -28,10 +43,18 @@ const Settings = ({ navigation }) => {
 export default observer(Settings);
 
 const styles = StyleSheet.create({
-    header: {
-        fontFamily: 'OpenSans-Bold',
-        paddingTop: '40%',
-        textAlign: 'center',
-        color: '#F19336',
+    root: {
+        flex: 1,
+        backgroundColor: '#F1E6E0',
+        justifyContent: 'center'
+    },
+    container: {
+        flex: 1,
+        marginTop: 80,
+        margin: 30,
+        padding: 13,
+        justifyContent: 'space-between',
+        borderRadius: 30,
+        backgroundColor: 'white'
     },
 })
