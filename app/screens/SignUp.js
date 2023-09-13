@@ -8,7 +8,7 @@ import {FormBuilder} from 'react-native-paper-form-builder';
 import TermsOfService from "../components/TermsOfService";
 
 const SignUp = ({ navigation }) => {
-    const { signUp } = useAuthenticationStore();
+    const { signUp, handleChangeAuthenticationStore } = useAuthenticationStore();
 
     const {
         control,
@@ -29,7 +29,8 @@ const SignUp = ({ navigation }) => {
     const onSignUp = async (name, email, password) => {
         const response = await signUp(name, email, password);
         if (response) {
-            navigation.navigate('ParentDashboard')
+            const {displayName, email: userEmail } = response?.user;
+            handleChangeAuthenticationStore('currentUser', {name: displayName, email: userEmail})
         }
     }
 
