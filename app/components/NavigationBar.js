@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BottomNavigation, Text } from 'react-native-paper';
+import { BottomNavigation } from 'react-native-paper';
 import { observer } from "mobx-react";
 import Home from "../screens/Home";
 import History from "../screens/History";

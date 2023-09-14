@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from "mobx-react";
 import { StyleSheet, View, } from 'react-native';
 
-import { Button, PaperProvider, Text } from 'react-native-paper';
+import { Button, PaperProvider } from 'react-native-paper';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
 
 const Settings = ({ navigation }) => {
@@ -22,7 +22,8 @@ const Settings = ({ navigation }) => {
                         <Button
                             icon='chevron-right'
                             labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 20, color: '#757575' }}
-                            contentStyle={{ flexDirection: 'row-reverse', alignSelf: 'flex-start', gap: 45 }}>
+                            contentStyle={{ flexDirection: 'row-reverse', alignSelf: 'flex-start', gap: 45 }}
+                            onPress={() => navigation.navigate('AddCaretaker')}>
                             Caretakers Profiles
                         </Button>
                     </View>

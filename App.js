@@ -45,11 +45,12 @@ const App = () => {
                         isSignedIn ?
                             <>
                                 <Stack.Screen name="Navigation" component={NavigationBar} options={styles.header} />
+                                <Stack.Screen name="AddCaretaker" component={AddCaretaker} options={styles.headerWithNav} />
+                                <Stack.Screen name="AddChild" component={AddChild} options={styles.headerWithNav} />
                             </> :
                             <>
                                 <Stack.Screen name="SignIn" component={SignIn} options={styles.header} />
                                 <Stack.Screen name="SignUp" component={SignUp} options={styles.headerWithNav} />
-                                <Stack.Screen name="AddCaretaker" component={AddChild} options={styles.headerWithNav} />
                             </>
                     }
                 </Stack.Navigator>
