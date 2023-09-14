@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { observer } from "mobx-react";
 import { StyleSheet, View, } from 'react-native';
-
-import { Button, PaperProvider, Text } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { Button, PaperProvider } from 'react-native-paper';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
 
-const Settings = ({ navigation }) => {
+const Settings = () => {
     const { signOut } = useAuthenticationStore();
+    const navigation = useNavigation();
+
     return (
         <PaperProvider>
             <View style={styles.root}>
@@ -22,7 +24,8 @@ const Settings = ({ navigation }) => {
                         <Button
                             icon='chevron-right'
                             labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 20, color: '#757575' }}
-                            contentStyle={{ flexDirection: 'row-reverse', alignSelf: 'flex-start', gap: 45 }}>
+                            contentStyle={{ flexDirection: 'row-reverse', alignSelf: 'flex-start', gap: 45 }}
+                            onPress={() => navigation.navigate('AddCaretaker')}>
                             Caretakers Profiles
                         </Button>
                     </View>

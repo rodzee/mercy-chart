@@ -92,7 +92,7 @@ const SignIn = ({ navigation }) => {
                     <TouchableOpacity>
                         <Text
                             style={{ alignSelf: 'flex-end', fontFamily: 'OpenSans-Regular', marginTop: 10, color: '#757575' }}
-                            onPress={() => navigation.navigate(AddCaretaker)}>
+                            onPress={() => navigation.navigate('AddCaretaker')}>
                             Forgot Password?
                         </Text>
                     </TouchableOpacity>
