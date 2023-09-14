@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { observer } from "mobx-react";
 import { StyleSheet, View, } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 import { Button, PaperProvider } from 'react-native-paper';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
 
-const Settings = ({ navigation }) => {
+const Settings = () => {
     const { signOut } = useAuthenticationStore();
+    const navigation = useNavigation();
+
     return (
         <PaperProvider>
             <View style={styles.root}>
