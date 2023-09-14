@@ -17,6 +17,9 @@ import AddChild from './app/screens/AddChild';
 import NavigationBar from "./app/components/NavigationBar";
 import { useAuthenticationStore } from "./app/stores/AuthenticationStore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Settings from "./app/screens/Settings";
+import Home from "./app/screens/Home";
+import History from "./app/screens/History";
 
 const Stack = createNativeStackNavigator();
 
