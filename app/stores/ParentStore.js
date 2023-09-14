@@ -1,18 +1,11 @@
 import React from 'react';
-import { makeObservable, action, observable } from 'mobx';
+import {makeAutoObservable} from 'mobx';
 
 class ParentStore {
-    parent = {
-        name: '',
-        email: '',
-        children: []
-    };
+    parent = {}
 
     constructor() {
-        makeObservable(this, {
-            parent: observable,
-            setParent: action,
-        })
+        makeAutoObservable(this)
     }
 
     setParent = (key, value) => {
