@@ -2,11 +2,13 @@ import * as React from 'react';
 import { observer } from "mobx-react";
 import { StyleSheet, View, Pressable } from 'react-native';
 
-import { IconButton, PaperProvider, Text } from 'react-native-paper';
+import { AnimatedFAB, IconButton, PaperProvider, Text } from 'react-native-paper';
+import TopBar from '../components/TopBar'
 
 const Chart = () => {
     return (
         <PaperProvider>
+            <TopBar />
             <View style={styles.root}>
                 <View style={styles.container}>
                     <View style={styles.timerContainer}>
@@ -34,6 +36,12 @@ const Chart = () => {
                         </Pressable>
                     </View>
                 </View>
+                <View style={styles.removeContainer}>
+                    <View style={styles.removeItems}>
+                        <IconButton icon='minus-circle' size={40} iconColor='#757575' style={{ marginLeft: -10 }} />
+                        <Text style={styles.removeTxt}> slide to remove one strike</Text>
+                    </View>
+                </View>
             </View>
         </PaperProvider>
     );
@@ -48,9 +56,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     container: {
-        flex: 1,
-        marginTop: 80,
-        margin: 30,
+        // flex: 1,
+        height: '80%',
+        marginTop: 50,
+        marginHorizontal: 30,
         padding: 20,
         borderRadius: 30,
         backgroundColor: 'white'
@@ -75,11 +84,29 @@ const styles = StyleSheet.create({
     },
     tapContainer: {
         borderRadius: 20,
-        margin: 15,
+        marginHorizontal: 15,
+        marginBottom: 15,
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5B372',
+    },
+    removeContainer: {
+        marginBottom: '10%',
+        marginHorizontal: 15,
+    },
+    removeItems: {
+        height: 25,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 20,
+        marginHorizontal: 15,
+        marginTop: '5%',
+        backgroundColor: '#FFF',
+    },
+    removeTxt: {
+        marginLeft: '7%',
+        fontFamily: 'OpenSans-Bold',
+        color: '#757575'
     }
-
 })
