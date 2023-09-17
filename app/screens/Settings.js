@@ -18,14 +18,14 @@ const Settings = () => {
                             icon='chevron-right'
                             labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 20, color: '#757575' }}
                             contentStyle={{ flexDirection: 'row-reverse', alignSelf: 'flex-start', gap: 70 }}
-                            onPress={() => navigation.navigate('AddChild')}>
+                            onPress={() => navigation.navigate('ChildProfile')}>
                             Children Profiles
                         </Button>
                         <Button
                             icon='chevron-right'
                             labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 20, color: '#757575' }}
                             contentStyle={{ flexDirection: 'row-reverse', alignSelf: 'flex-start', gap: 45 }}
-                            onPress={() => navigation.navigate('AddCaretaker')}>
+                            onPress={() => navigation.navigate('CaretakerProfile')}>
                             Caretakers Profiles
                         </Button>
                     </View>
