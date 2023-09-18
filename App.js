@@ -4,21 +4,19 @@ import { observer } from "mobx-react";
 
 // LIB IMPORTS //
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PaperProvider } from 'react-native-paper';
-
-// PAGE IMPORTS //
-import SignUp from './app/screens/SignUp';
-import SignIn from "./app/screens/SignIn";
-import CaretakerProfile from './app/screens/CaretakerProfile';
-import ChildProfile from './app/screens/ChildProfile';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 // COMPONENT IMPORTS //
-import NavigationBar from "./app/components/NavigationBar";
 import { useAuthenticationStore } from "./app/stores/AuthenticationStore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import HomeStackScreen from "./app/stacks/HomeStackScreen";
+import HistoryStackScreen from "./app/stacks/HistoryStackScreen";
+import SettingsStackScreen from "./app/stacks/SettingsStackScreen";
+import AuthenticationStackScreen from "./app/stacks/AuthenticationStackScreen";
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const App = () => {
     const authStore = useAuthenticationStore();
@@ -40,20 +38,36 @@ const App = () => {
     return (
         <PaperProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="SignIn">
-                    {
-                        isSignedIn ?
-                            <>
-                                <Stack.Screen name="Navigation" component={NavigationBar} options={styles.header} />
-                                <Stack.Screen name="CaretakerProfile" component={CaretakerProfile} options={styles.headerWithNav} />
-                                <Stack.Screen name="ChildProfile" component={ChildProfile} options={styles.headerWithNav} />
-                            </> :
-                            <>
-                                <Stack.Screen name="SignIn" component={SignIn} options={styles.header} />
-                                <Stack.Screen name="SignUp" component={SignUp} options={styles.headerWithNav} />
-                            </>
-                    }
-                </Stack.Navigator>
+                { isSignedIn ?
+                    <Tab.Navigator screenOptions={({route}) => ({
+                       tabBarIcon: ({focused, color, size}) => {
+                           let iconName;
+
+                           switch (route.name) {
+                               case 'History':
+                                   iconName = 'history';
+                                   break;
+                               case 'Settings':
+                                   iconName = 'settings';
+                                   break;
+                               default:
+                                   iconName = 'home';
+                           }
+
+                           return <MaterialIcons name={iconName} size={size} color={color} />;
+                       },
+                        tabBarActiveTintColor: 'tomato',
+                        tabBarInactiveTintColor: 'gray',
+                        headerShown: false
+                    })}
+
+                        >
+                        <Tab.Screen name="Home" component={HomeStackScreen} />
+                        <Tab.Screen name="History" component={HistoryStackScreen} />
+                        <Tab.Screen name="Settings" component={SettingsStackScreen} />
+                    </Tab.Navigator> :
+                    <AuthenticationStackScreen />
+                }
             </NavigationContainer>
         </PaperProvider>
     );
@@ -73,7 +87,6 @@ const styles = StyleSheet.create({
         headerStyle: {
             backgroundColor: '#F1E6E0',
         },
-        // headerShown: false,
         headerShadowVisible: false,
         headerBackTitleVisible: true,
         headerTintColor: '#F19336',
