@@ -22,7 +22,7 @@ const Chart = () => {
                         icon='gift'
                         size={120}
                         iconColor='#FFD426'
-                        style={{ flex: 1, justifyContent: 'center', width: '100%' }}
+                        style={{ flex: 1, justifyContent: 'center', width: '100%', height: '100%' }}
                     />
                     <View style={styles.strikesContainer}>
                         <View style={styles.xContainer}>
@@ -53,12 +53,10 @@ const styles = StyleSheet.create({
     root: {
         flex: 1,
         backgroundColor: '#F1E6E0',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     container: {
-        // flex: 1,
-        height: '80%',
-        marginTop: 50,
+        flex: 1,
         marginHorizontal: 30,
         padding: 20,
         borderRadius: 30,
