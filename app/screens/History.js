@@ -9,6 +9,7 @@ const Calendar = ({ navigation }) => {
         <PaperProvider>
             <View style={{ flex: 1, backgroundColor: '#F1E6E0' }}>
                 <Text variant="displaySmall" style={styles.header}>History</Text>
+                {/* <Calendar /> */}
             </View>
         </PaperProvider>
     );

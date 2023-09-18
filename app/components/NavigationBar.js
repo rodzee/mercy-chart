@@ -5,7 +5,7 @@ import Home from "../screens/Home";
 import History from "../screens/History";
 import Settings from "../screens/Settings";
 
-const NavigationBar = () => {
+const NavigationBar = ({children}) => {
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
         { key: 'home', title: 'Home', focusedIcon: 'gift', unfocusedIcon: 'gift-outline' },
@@ -20,19 +20,22 @@ const NavigationBar = () => {
     });
 
     return (
-        <BottomNavigation
-            navigationState={{ index, routes }}
-            onIndexChange={setIndex}
-            activeColor='#F19336'
-            renderScene={renderScene}
-            labeled={true}
-            barStyle={{ backgroundColor: '#FFF', borderTopColor: '#F1C498', borderTopWidth: 1, }}
-            theme={{
-                colors: {
-                    secondaryContainer: 'transparent'
-                }
-            }}
-        />
+    <>
+      {children}
+      <BottomNavigation
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        activeColor='#F19336'
+        renderScene={renderScene}
+        labeled={true}
+        barStyle={{ backgroundColor: '#FFF', borderTopColor: '#F1C498', borderTopWidth: 1, }}
+        theme={{
+          colors: {
+            secondaryContainer: 'transparent'
+          }
+        }}
+      />
+    </>
     );
 };
 

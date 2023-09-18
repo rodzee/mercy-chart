@@ -4,6 +4,7 @@ import { StyleSheet, View, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Button, PaperProvider } from 'react-native-paper';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
+import TopBar from '../components/TopBar';
 
 const Settings = () => {
     const { signOut } = useAuthenticationStore();
@@ -11,6 +12,7 @@ const Settings = () => {
 
     return (
         <PaperProvider>
+            <TopBar />
             <View style={styles.root}>
                 <View style={styles.container}>
                     <View>
@@ -53,7 +55,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        marginTop: 80,
         margin: 30,
         padding: 13,
         justifyContent: 'space-between',
