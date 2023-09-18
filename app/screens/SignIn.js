@@ -5,7 +5,6 @@ import {useForm} from 'react-hook-form';
 import {FormBuilder} from 'react-native-paper-form-builder';
 import { PaperProvider, Button, Text } from 'react-native-paper';
 import { observer } from "mobx-react";
-import AddCaretaker from './AddCaretaker';
 import { useFonts } from 'expo-font';
 
 const SignIn = ({ navigation }) => {
