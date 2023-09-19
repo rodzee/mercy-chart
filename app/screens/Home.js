@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from "mobx-react";
 import { StyleSheet, View, Pressable } from 'react-native';
 
-import { AnimatedFAB, IconButton, PaperProvider, Text } from 'react-native-paper';
+import { IconButton, PaperProvider, Text } from 'react-native-paper';
 import TopBar from '../components/TopBar'
 
 const Chart = () => {
