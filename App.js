@@ -10,17 +10,13 @@ import { PaperProvider } from 'react-native-paper';
 // PAGE IMPORTS //
 import SignUp from './app/screens/SignUp';
 import SignIn from "./app/screens/SignIn";
-import Caretaker from './app/screens/CaretakerProfile';
+import CaretakerProfile from './app/screens/CaretakerProfile';
 import ChildProfile from './app/screens/ChildProfile';
 
 // COMPONENT IMPORTS //
 import NavigationBar from "./app/components/NavigationBar";
 import { useAuthenticationStore } from "./app/stores/AuthenticationStore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import Settings from "./app/screens/Settings";
-import Home from "./app/screens/Home";
-import History from "./app/screens/History";
-import CaretakerProfile from './app/screens/CaretakerProfile';
 
 const Stack = createNativeStackNavigator();
 
