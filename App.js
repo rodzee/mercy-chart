@@ -6,7 +6,12 @@ import { observer } from "mobx-react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PaperProvider } from 'react-native-paper';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
+// PAGE IMPORTS //
+import SignUp from './app/screens/SignUp';
+import SignIn from "./app/screens/SignIn";
+import Caretaker from './app/screens/CaretakerProfile';
+import ChildProfile from './app/screens/ChildProfile';
 
 // COMPONENT IMPORTS //
 import { useAuthenticationStore } from "./app/stores/AuthenticationStore";
@@ -38,30 +43,30 @@ const App = () => {
     return (
         <PaperProvider>
             <NavigationContainer>
-                { isSignedIn ?
-                    <Tab.Navigator screenOptions={({route}) => ({
-                       tabBarIcon: ({focused, color, size}) => {
-                           let iconName;
+                {isSignedIn ?
+                    <Tab.Navigator screenOptions={({ route }) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            let iconName;
 
-                           switch (route.name) {
-                               case 'History':
-                                   iconName = 'history';
-                                   break;
-                               case 'Settings':
-                                   iconName = 'settings';
-                                   break;
-                               default:
-                                   iconName = 'home';
-                           }
+                            switch (route.name) {
+                                case 'History':
+                                    iconName = 'history';
+                                    break;
+                                case 'Settings':
+                                    iconName = 'settings';
+                                    break;
+                                default:
+                                    iconName = 'home';
+                            }
 
-                           return <MaterialIcons name={iconName} size={size} color={color} />;
-                       },
+                            return <MaterialIcons name={iconName} size={size} color={color} />;
+                        },
                         tabBarActiveTintColor: 'tomato',
                         tabBarInactiveTintColor: 'gray',
                         headerShown: false
                     })}
 
-                        >
+                    >
                         <Tab.Screen name="Home" component={HomeStackScreen} />
                         <Tab.Screen name="History" component={HistoryStackScreen} />
                         <Tab.Screen name="Settings" component={SettingsStackScreen} />
