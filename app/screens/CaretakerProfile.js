@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     profile: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginLeft: 10,
     },
     profileTxt: {
         fontFamily: 'OpenSans-Bold',
