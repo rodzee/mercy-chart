@@ -10,7 +10,7 @@ import { PaperProvider } from 'react-native-paper';
 // PAGE IMPORTS //
 import SignUp from './app/screens/SignUp';
 import SignIn from "./app/screens/SignIn";
-import Caretaker from './app/screens/CaretakerProfile';
+import CaretakerProfile from './app/screens/CaretakerProfile';
 import ChildProfile from './app/screens/ChildProfile';
 
 // COMPONENT IMPORTS //
