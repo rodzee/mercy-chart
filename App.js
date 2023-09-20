@@ -38,30 +38,32 @@ const App = () => {
     return (
         <PaperProvider>
             <NavigationContainer>
-                { isSignedIn ?
-                    <Tab.Navigator screenOptions={({route}) => ({
-                       tabBarIcon: ({focused, color, size}) => {
-                           let iconName;
+                {isSignedIn ?
+                    <Tab.Navigator screenOptions={({ route }) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            let iconName;
 
-                           switch (route.name) {
-                               case 'History':
-                                   iconName = 'history';
-                                   break;
-                               case 'Settings':
-                                   iconName = 'settings';
-                                   break;
-                               default:
-                                   iconName = 'home';
-                           }
+                            switch (route.name) {
+                                case 'History':
+                                    iconName = 'history';
+                                    break;
+                                case 'Settings':
+                                    iconName = 'settings';
+                                    break;
+                                default:
+                                    iconName = 'home';
+                            }
 
-                           return <MaterialIcons name={iconName} size={size} color={color} />;
-                       },
-                        tabBarActiveTintColor: 'tomato',
-                        tabBarInactiveTintColor: 'gray',
+                            return <MaterialIcons name={iconName} size={size} color={color} />;
+                        },
+                        tabBarStyle: { height: 90, paddingTop: 10, paddingBottom: 25, borderTopColor: '#F1C498', borderTopWidth: 1 },
+                        tabBarLabelStyle: { fontFamily: 'OpenSans-Regular', fontSize: 12 },
+                        tabBarActiveTintColor: '#F19336',
+                        tabBarInactiveTintColor: '#757575',
                         headerShown: false
                     })}
 
-                        >
+                    >
                         <Tab.Screen name="Home" component={HomeStackScreen} />
                         <Tab.Screen name="History" component={HistoryStackScreen} />
                         <Tab.Screen name="Settings" component={SettingsStackScreen} />
