@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { StyleSheet, View, } from 'react-native';
 import { observer } from "mobx-react";
-import { PaperProvider, Button, Text } from 'react-native-paper';
+import {PaperProvider, Button, Text, HelperText} from 'react-native-paper';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import {useForm} from 'react-hook-form';
 import {FormBuilder} from 'react-native-paper-form-builder';
 import TermsOfService from "../components/TermsOfService";
 
 const SignUp = ({ navigation }) => {
-    const { signUp, handleChangeAuthenticationStore } = useAuthenticationStore();
+    const { signUp, isSigningUp, emailIsAlreadyInUse} = useAuthenticationStore();
 
     const {
         control,
@@ -27,11 +27,7 @@ const SignUp = ({ navigation }) => {
     });
 
     const onSignUp = async (name, email, password) => {
-        const response = await signUp(name, email, password);
-        if (response) {
-            const {displayName, email: userEmail } = response?.user;
-            handleChangeAuthenticationStore('currentUser', {name: displayName, email: userEmail})
-        }
+        await signUp(name, email, password);
     }
 
     return (
@@ -141,11 +137,18 @@ const SignUp = ({ navigation }) => {
                             },
                         ]}
                     />
+                    {
+                        emailIsAlreadyInUse &&
+                        <View>
+                            <HelperText type="error">An account with this email already exists.</HelperText>
+                        </View>
+                    }
                     <Button
                         mode="contained"
                         buttonColor='#F19336'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginTop: 20 }}
+                        loading={isSigningUp}
                         onPress={handleSubmit(({name, email, password}) => {
                             onSignUp(name, email, password)
                         })}>
