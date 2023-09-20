@@ -1,20 +1,23 @@
-import React from 'react';
+import {createContext, useContext} from 'react';
 import {makeAutoObservable} from 'mobx';
 import { FIREBASE_AUTH } from "../config/firebase.config";
 import {
     signOut,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    updateProfile
+    updateProfile,
 } from 'firebase/auth';
+import User from "./models/User";
+import { userStore } from "./UserStore";
 
 class AuthenticationStore {
-    currentUser = null;
+    user = null;
     name = '';
     email = '';
     password = '';
     confirmPassword= '';
     isSignedIn = false;
+    isSigningUp = false;
     signInFailed = false;
     signUpFailed = false;
     errorMessage = '';
@@ -32,50 +35,51 @@ class AuthenticationStore {
         'auth/weak-password': 'Password should be at least 6 characters.',
         'auth/missing-password': 'Missing Password.',
         'auth/missing-email': 'Missing Email.',
-        'auth/user-not-found': 'User Not Found.'
+        'auth/user-not-found': 'User Not Found.',
+        'auth/email-already-in-use': 'An account with this email already exists.'
     }
 
     signIn = async (email, password) => {
-        try {
-            const response = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
-            this.handleChangeAuthenticationStore('currentUser', response.user)
+        signInWithEmailAndPassword(FIREBASE_AUTH, email, password).then((response) => {
+            this.handleChangeAuthenticationStore('user', response.user)
             this.handleChangeAuthenticationStore('isSignedIn', true)
             this.handleChangeAuthenticationStore('signInFailed', false)
             return response;
-        } catch (error) {
+        }).catch((error) => {
             console.log('error', error)
             this.handleChangeAuthenticationStore('signInFailed', true)
             this.handleChangeAuthenticationStore('isSignedIn', false)
             this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
-        } finally {
+        }).finally(() =>{
             console.log('signed in')
-        }
+        })
     }
 
-    signUp = async (name, email, password) => {
-        try {
-            const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
-            await updateProfile(FIREBASE_AUTH.currentUser, {
-                displayName: name,
-            }).then(() => {
-                console.log('Profile updated!')
-                // Profile updated!
-                // ...
+    signUp = (name, email, password) => {
+        const {getUser, setUser} = userStore;
+        createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
+            .then(({user}) => {
+                if (user) {
+                    updateProfile(user, { displayName: name, })
+                        .then(()=> {
+                            setUser(user.uid, new User(user))
+                                .catch((error) => console.log(error))
+                        })
+                        .catch((error) => console.log(error))
+                    this.handleChangeAuthenticationStore('signUpFailed', false)
+                    this.handleChangeAuthenticationStore('isSignedIn', true)
+                }
+                return user;
             }).catch((error) => {
-                console.log('An error occurred')
-                // An error occurred
-                // ...
-            });
-            this.handleChangeAuthenticationStore('signUpFailed', false)
-            this.handleChangeAuthenticationStore('isSignedIn', true)
-            return response;
-        } catch (error) {
-            this.handleChangeAuthenticationStore('signUpFailed', true)
-            this.handleChangeAuthenticationStore('isSignedIn', false)
-            this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
-        } finally {
-            console.log('finally signed up')
-        }
+                console.log(error)
+                this.handleChangeAuthenticationStore('signUpFailed', true)
+                this.handleChangeAuthenticationStore('isSignedIn', false)
+                this.handleChangeAuthenticationStore('isSigningUp', false)
+                this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
+            }).finally(() => {
+                this.handleChangeAuthenticationStore('isSigningUp', false)
+                console.log('finally signed up')
+            })
     }
 
     signOut = async () => {
@@ -88,6 +92,10 @@ class AuthenticationStore {
         } finally {
             console.log('signed out')
         }
+    }
+
+    get emailIsAlreadyInUse() {
+        return this.errorMessage === 'An account with this email already exists.'
     }
 
     passwordMatches = () => {
@@ -103,5 +111,5 @@ class AuthenticationStore {
 // Instantiate the counter store.
 const authenticationStore = new AuthenticationStore();
 // Create a React Context with the counter store instance.
-export const AuthenticationStoreContext = React.createContext(authenticationStore);
-export const useAuthenticationStore = () => React.useContext(AuthenticationStoreContext)
+export const AuthenticationStoreContext = createContext(authenticationStore);
+export const useAuthenticationStore = () => useContext(AuthenticationStoreContext)
