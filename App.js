@@ -6,12 +6,7 @@ import { observer } from "mobx-react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PaperProvider } from 'react-native-paper';
-
-// PAGE IMPORTS //
-import SignUp from './app/screens/SignUp';
-import SignIn from "./app/screens/SignIn";
-import CaretakerProfile from './app/screens/CaretakerProfile';
-import ChildProfile from './app/screens/ChildProfile';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 // COMPONENT IMPORTS //
 import { useAuthenticationStore } from "./app/stores/AuthenticationStore";
@@ -65,7 +60,6 @@ const App = () => {
                         tabBarInactiveTintColor: 'gray',
                         headerShown: false
                     })}
-
                     >
                         <Tab.Screen name="Home" component={HomeStackScreen} />
                         <Tab.Screen name="History" component={HistoryStackScreen} />
