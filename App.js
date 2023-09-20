@@ -62,7 +62,6 @@ const App = () => {
                         tabBarInactiveTintColor: '#757575',
                         headerShown: false
                     })}
-
                     >
                         <Tab.Screen name="Home" component={HomeStackScreen} />
                         <Tab.Screen name="History" component={HistoryStackScreen} />

@@ -4,11 +4,12 @@ import { StyleSheet, View, } from 'react-native';
 
 import { PaperProvider, Text } from 'react-native-paper';
 
-const Calendar = ({ navigation }) => {
+const Calendar = () => {
     return (
         <PaperProvider>
             <View style={{ flex: 1, backgroundColor: '#F1E6E0' }}>
                 <Text variant="displaySmall" style={styles.header}>History</Text>
+                {/* <Calendar /> */}
             </View>
         </PaperProvider>
     );

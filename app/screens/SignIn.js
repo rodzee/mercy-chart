@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, } from 'react-native';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
-import {useForm} from 'react-hook-form';
-import {FormBuilder} from 'react-native-paper-form-builder';
+import { useForm } from 'react-hook-form';
+import { FormBuilder } from 'react-native-paper-form-builder';
 import { PaperProvider, Button, Text } from 'react-native-paper';
 import { observer } from "mobx-react";
 import { useFonts } from 'expo-font';
@@ -58,8 +58,8 @@ const SignIn = ({ navigation }) => {
                                 textInputProps: {
                                     label: 'Email',
                                     outlineStyle: { borderRadius: 20, borderColor: '#fff' },
-                                    selectionColor:'#F19336',
-                                    activeOutlineColor:'#757575'
+                                    selectionColor: '#F19336',
+                                    activeOutlineColor: '#757575'
                                 },
                             },
                             {
@@ -82,8 +82,8 @@ const SignIn = ({ navigation }) => {
                                 textInputProps: {
                                     label: 'Password',
                                     outlineStyle: { borderRadius: 20, borderColor: '#fff' },
-                                    selectionColor:'#F19336',
-                                    activeOutlineColor:'#757575'
+                                    selectionColor: '#F19336',
+                                    activeOutlineColor: '#757575'
                                 },
                             },
                         ]}
@@ -101,7 +101,7 @@ const SignIn = ({ navigation }) => {
                         buttonColor='#F19336'
                         labelStyle={{ fontWeight: 'bold', fontSize: 16 }}
                         style={{ marginTop: 20, paddingVertical: 3 }}
-                        onPress={handleSubmit(({email, password}) => {
+                        onPress={handleSubmit(({ email, password }) => {
                             signIn(email, password)
                         })}>
                         Sign In
