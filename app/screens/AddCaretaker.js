@@ -1,64 +1,110 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { useAuthenticationStore } from "../stores/AuthenticationStore";
-import {
-    PaperProvider,
-    Button,
-    Text,
-    TextInput,
-    HelperText,
-} from 'react-native-paper';
+// import { useAuthenticationStore } from "../stores/AuthenticationStore";
+import { PaperProvider, Button, Text } from 'react-native-paper';
+import {FormBuilder} from "react-native-paper-form-builder";
+import {useForm} from "react-hook-form";
 
 const AddCaretaker = () => {
+    // const {
+    //     name,
+    //     email,
+    //     emailConfirmation,
+    //     errorMessage,
+    // } = useAuthenticationStore();
+
     const {
-        name,
-        email,
-        emailConfirmation,
-        errorMessage,
-    } = useAuthenticationStore();
+        control,
+        setFocus,
+        handleSubmit,
+        formState: {errors}
+    } = useForm({
+        defaultValues: {
+            name: '',
+            email: '',
+            confirmEmail: ''
+        },
+        mode: 'onChange',
+        reValidateMode: 'onSubmit'
+    });
 
     return (
         <PaperProvider>
             <View style={styles.root}>
                 <View style={styles.container}>
                     <Text style={styles.header}>Add Caretaker</Text>
-                    <TextInput
-                        mode='outlined'
-                        label="Name"
-                        value={name}
-                        selectionColor='#F19336'
-                        activeOutlineColor='#757575'
-                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
-                        style={{ marginBottom: 10, backgroundColor: '#F5F5F5' }}
+                    <FormBuilder
+                        control={control}
+                        setFocus={setFocus}
+                        formConfigArray={[
+                            {
+                                name: 'name',
+                                type: 'text',
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Name is required',
+                                    },
+                                },
+                                textInputProps: {
+                                    label: 'Name',
+                                    outlineStyle: { borderRadius: 20, borderColor: '#fff', backgroundColor: '#F5F5F5' },
+                                    selectionColor:'#F19336',
+                                    activeOutlineColor:'#757575'
+                                },
+                            },
+                            {
+                                name: 'email',
+                                type: 'email',
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Email is required',
+                                    },
+                                    pattern: {
+                                        value:
+                                            /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
+                                        message: 'Email is invalid',
+                                    },
+                                },
+                                textInputProps: {
+                                    label: 'Email',
+                                    outlineStyle: { borderRadius: 20, borderColor: '#fff', backgroundColor: '#F5F5F5' },
+                                    selectionColor:'#F19336',
+                                    activeOutlineColor:'#757575'
+                                },
+                            },
+                            {
+                                name: 'confirmEmail',
+                                type: 'email',
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Confirm Email is required',
+                                    },
+                                    pattern: {
+                                        value:
+                                            /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
+                                        message: 'Email is invalid',
+                                    },
+                                },
+                                textInputProps: {
+                                    label: 'Confirm Email',
+                                    outlineStyle: { borderRadius: 20, borderColor: '#fff', backgroundColor: '#F5F5F5' },
+                                    selectionColor:'#F19336',
+                                    activeOutlineColor:'#757575'
+                                },
+                            },
+                        ]}
                     />
-                    <TextInput
-                        mode='outlined'
-                        label="Email"
-                        value={email}
-                        selectionColor='#F19336'
-                        activeOutlineColor='#757575'
-                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
-                        style={{ marginBottom: 10, backgroundColor: '#F5F5F5' }}
-                    />
-                    <TextInput
-                        mode='outlined'
-                        label="Confirm Email"
-                        value={emailConfirmation}
-                        selectionColor='#F19336'
-                        activeOutlineColor='#757575'
-                        outlineStyle={{ borderRadius: 20, borderColor: '#fff' }}
-                        style={{ backgroundColor: '#F5F5F5' }}
-                    />
-                    <HelperText type="error" >
-                        {errorMessage}
-                    </HelperText>
-
                     <Button
                         mode="contained"
                         buttonColor='#F19336'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginTop: 20 }}
-                        onPress={() => { }}
+                        onPress={handleSubmit(({name, email}) => {
+                            console.log(name, email)
+                        })}>
                     >Add</Button>
                 </View>
             </View>
@@ -90,6 +136,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 30
     },
-
-
 })
