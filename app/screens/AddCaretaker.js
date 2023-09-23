@@ -14,7 +14,6 @@ const AddCaretaker = () => {
         name,
         email,
         emailConfirmation,
-        handleChangeAuthenticationStore,
         errorMessage,
     } = useAuthenticationStore();
 
