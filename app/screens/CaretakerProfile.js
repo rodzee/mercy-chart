@@ -1,13 +1,23 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Text, PaperProvider, Avatar, IconButton } from 'react-native-paper';
+import {useNavigation} from "@react-navigation/native";
 
 const CaretakerProfile = () => {
+    const navigation = useNavigation();
+
     return (
         <PaperProvider>
             <View style={styles.root}>
                 <View style={styles.container}>
-                    <Text style={styles.header}>Caretakers Profiles</Text>
+                    <View style={styles.headerContainer}>
+                        <Text style={styles.header}>Caretakers Profiles</Text>
+                        <IconButton
+                            icon='account-plus'
+                            iconColor='#757575'
+                            style={{paddingTop: 14}}
+                            onPress={() => navigation.navigate('AddCaretaker')} />
+                    </View>
                     <View style={styles.profilesContainer}>
                         <View style={styles.profile} >
                             <Avatar.Text label='D' size={26} style={{ backgroundColor: '#757575' }} />
@@ -42,6 +52,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderRadius: 30,
         backgroundColor: 'white'
+    },
+    headerContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingLeft: 13,
+        paddingRight: 13,
     },
     header: {
         fontFamily: 'OpenSans-Bold',

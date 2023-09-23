@@ -8,12 +8,9 @@ import {
     Avatar,
 } from 'react-native-paper';
 
-import TopBar from '../components/TopBar';
-
 const AddChild = () => {
     return (
         <PaperProvider>
-            <TopBar />
             <View style={styles.root}>
                 <View style={styles.container}>
                     <Text style={styles.header}>Add Child</Text>
