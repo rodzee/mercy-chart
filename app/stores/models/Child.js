@@ -1,18 +1,10 @@
+import uuid from 'react-native-uuid';
 export default class Child {
     uid = null;
-    displayName= null;
-    avatar = null;
-    chart = [
-        {
-            strikes: 0,
-            prize: null
-        }
-    ]
+    name= null;
 
     constructor(init) {
-        this.uid = init.uid;
-        this.displayName = init.displayName;
-        this.avatar = init.avatar;
-        this.chart = init.chart;
+        this.uid = init?.uid || uuid.v4();
+        this.name = init.name;
     }
 }

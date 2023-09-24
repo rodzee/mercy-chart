@@ -3,8 +3,6 @@ export default class User {
     displayName= null;
     email = null;
     children = [];
-    // role = '';
-    // authorizedUsers = [];
 
     constructor(init) {
         this.uid = init.uid;
@@ -13,7 +11,7 @@ export default class User {
     }
 
     setChild = child => {
-        const foundChild = this.children.find(c => c.id === child.id);
+        const foundChild = this.children.find(c => c.uid === child.uid);
         if (!foundChild) {
             this.children.push(child)
         }

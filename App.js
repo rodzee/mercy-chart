@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PaperProvider } from 'react-native-paper';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 // COMPONENT IMPORTS //
 import { useAuthenticationStore } from "./app/stores/AuthenticationStore";
@@ -15,18 +16,20 @@ import HomeStackScreen from "./app/stacks/HomeStackScreen";
 import HistoryStackScreen from "./app/stacks/HistoryStackScreen";
 import SettingsStackScreen from "./app/stacks/SettingsStackScreen";
 import AuthenticationStackScreen from "./app/stacks/AuthenticationStackScreen";
+import {useCommonStore} from "./app/stores/CommonStore";
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
     const authStore = useAuthenticationStore();
+    const {isLoading} = useCommonStore();
     const { handleChangeAuthenticationStore, isSignedIn } = authStore;
     const auth = getAuth();
 
     useEffect(() => {
         const subscriber = onAuthStateChanged(auth, (user) => {
             if (user) {
-                handleChangeAuthenticationStore('currentUser', user)
+                handleChangeAuthenticationStore('user', user)
                 handleChangeAuthenticationStore('isSignedIn', true)
             } else {
                 handleChangeAuthenticationStore('isSignedIn', false)
@@ -38,6 +41,12 @@ const App = () => {
     return (
         <PaperProvider>
             <NavigationContainer>
+                <Spinner
+                    visible={isLoading}
+                    textContent={'Loading...'}
+                    cancelable
+                    textStyle={{color: '#F19336'}}
+                />
                 { isSignedIn ?
                     <Tab.Navigator screenOptions={({route}) => ({
                        tabBarIcon: ({focused, color, size}) => {

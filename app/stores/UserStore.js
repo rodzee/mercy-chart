@@ -2,6 +2,7 @@ import {createContext, useContext} from 'react';
 import {makeAutoObservable} from 'mobx';
 import { get, set, push, update, ref, onValue, child } from "firebase/database";
 import { FIREBASE_DB } from "../config/firebase.config";
+import {commonStore} from "./CommonStore";
 
 class UserStore {
     user = {};
@@ -12,26 +13,29 @@ class UserStore {
 
     getUsers = async () => {
         try {
+            commonStore.handleCommonStore('isLoading', true)
             return await get(ref(FIREBASE_DB, 'users'));
         } catch (error) {
             console.log('error', error)
         } finally {
-            console.log('get users')
+            commonStore.handleCommonStore('isLoading', false)
         }
     }
 
     getUser = async (userId) => {
         try {
+            commonStore.handleCommonStore('isLoading', true)
             return await get(ref(FIREBASE_DB, `users/${userId}`))
         } catch (error) {
             console.log('error', error)
         } finally {
-            console.log('get user')
+            commonStore.handleCommonStore('isLoading', false)
         }
     }
 
     setUser = async (userId, user) => {
         try {
+            commonStore.handleCommonStore('isLoading', true)
             return await set(ref(FIREBASE_DB, `users/${userId}`), {
                 email: user.email,
                 uid: user.uid,
@@ -39,6 +43,8 @@ class UserStore {
             })
         } catch (error) {
             console.log('error', error)
+        } finally {
+            commonStore.handleCommonStore('isLoading', false)
         }
     }
 
