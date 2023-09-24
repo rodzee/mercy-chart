@@ -1,13 +1,11 @@
 import React from 'react';
 import {makeAutoObservable} from 'mobx';
-import {get, ref, set, update} from "firebase/database";
+import {get, ref, set} from "firebase/database";
 import {FIREBASE_DB} from "../config/firebase.config";
 import {storageStore} from './StorageStore'
 import {commonStore} from "./CommonStore";
 
 class ChildStore {
-    child = {}
-
     children = []
 
     constructor() {
@@ -21,10 +19,7 @@ class ChildStore {
             this.handleChangeChildStore('children',
                 Object.values(childrenSnapshot.val()).filter(child => {
                     if (child.userId === userId) {
-                        return {
-                            ...child,
-                            avatar: storageStore.avatars.find((c) => c === child.uid)
-                        }
+                        return child
                     }
                 })
             )
@@ -46,24 +41,20 @@ class ChildStore {
         }
     }
 
-    setChild = (userId, child) => {
+    setChild = async (userId, child) => {
         try {
             commonStore.handleCommonStore('isLoading', true)
-            return set(ref(FIREBASE_DB, `children/${child.uid}/`), {
-                uid: child.uid,
-                name: child.name,
-                userId: userId
-            }).then((responseChild) => {
-                console.log(responseChild)
-                storageStore.uploadImageAsync(child.uid, storageStore.imageURL)
-                    .then((avatarURL) => {
-                        const _child = {
-                            ...child,
+            await storageStore.uploadImageAsync(child.uid, storageStore.imageURL)
+                .then(async (avatarURL) => {
+                    if (avatarURL) {
+                        await set(ref(FIREBASE_DB, `children/${child.uid}/`), {
+                            uid: child.uid,
+                            name: child.name,
+                            userId: userId,
                             avatarURL
-                        }
-                        update(ref(FIREBASE_DB, `children/${child.uid}/`), _child)
-                    })
-            })
+                        })
+                    }
+                })
         } catch (error) {
             console.log('error', error)
         } finally {

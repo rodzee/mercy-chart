@@ -12,11 +12,12 @@ const ChildProfile = () => {
     const {user} = useAuthenticationStore();
 
     useEffect(() => {
-        const func = async () => {
-            await getChildren(user.uid)
-        }
         func();
-    }, [user.id]);
+    }, []);
+
+    const func = async () => {
+        await getChildren(user.uid)
+    }
 
     return (
         <PaperProvider>
