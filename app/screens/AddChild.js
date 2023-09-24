@@ -12,20 +12,32 @@ import Child from "../stores/models/Child";
 import {useNavigation} from "@react-navigation/native";
 
 const AddChild = ({userId}) => {
-    const {setChild} = useChildStore();
+    const {setChild, getChildren} = useChildStore();
     const { user } = useAuthenticationStore();
-    const { imageURL, pickImage } = useStorageStore();
+    const { imageURL, pickImage, handleChangeStorageStore } = useStorageStore();
     const navigation = useNavigation();
 
     useEffect( () => {
         requestImagePermission()
+
+        // cleanup
+        return async () => {
+            await func();
+            handleChangeStorageStore('imageURL', null)
+            reset()
+        }
     }, []);
+
+    const func = async () => {
+        await getChildren(user.uid)
+    }
 
     const {
         control,
         setFocus,
         handleSubmit,
-        formState: {errors}
+        formState: {errors},
+        reset
     } = useForm({
         defaultValues: { name: '' },
         mode: 'onChange',

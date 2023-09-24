@@ -6,11 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 import {commonStore} from "./CommonStore";
 
 class StorageStore {
-    image = null;
-
     imageURL = null;
-
-    avatars = [];
 
     constructor() {
         makeAutoObservable(this)
