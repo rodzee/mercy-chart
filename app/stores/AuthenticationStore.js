@@ -9,9 +9,10 @@ import {
 } from 'firebase/auth';
 import User from "./models/User";
 import { userStore } from "./UserStore";
+import {commonStore} from "./CommonStore";
 
 class AuthenticationStore {
-    user = null;
+    user = {};
     name = '';
     email = '';
     password = '';
@@ -40,23 +41,29 @@ class AuthenticationStore {
     }
 
     signIn = async (email, password) => {
-        signInWithEmailAndPassword(FIREBASE_AUTH, email, password).then((response) => {
-            this.handleChangeAuthenticationStore('user', response.user)
-            this.handleChangeAuthenticationStore('isSignedIn', true)
-            this.handleChangeAuthenticationStore('signInFailed', false)
-            return response;
-        }).catch((error) => {
-            console.log('error', error)
-            this.handleChangeAuthenticationStore('signInFailed', true)
-            this.handleChangeAuthenticationStore('isSignedIn', false)
-            this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
-        }).finally(() =>{
-            console.log('signed in')
-        })
+        commonStore.handleCommonStore('isLoading', true)
+        signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
+            .then((response) => {
+                this.handleChangeAuthenticationStore('user', response.user)
+                this.handleChangeAuthenticationStore('isSignedIn', true)
+                this.handleChangeAuthenticationStore('signInFailed', false)
+                return response;
+            })
+            .catch((error) => {
+                console.log('error', error)
+                this.handleChangeAuthenticationStore('signInFailed', true)
+                this.handleChangeAuthenticationStore('isSignedIn', false)
+                this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
+            })
+            .finally(() =>{
+                console.log('signed in')
+                commonStore.handleCommonStore('isLoading', false)
+            })
     }
 
     signUp = (name, email, password) => {
-        const {getUser, setUser} = userStore;
+        const {setUser} = userStore;
+        commonStore.handleCommonStore('isLoading', true)
         createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
             .then(({user}) => {
                 if (user) {
@@ -71,15 +78,16 @@ class AuthenticationStore {
                 }
                 return user;
             }).catch((error) => {
-                console.log(error)
-                this.handleChangeAuthenticationStore('signUpFailed', true)
-                this.handleChangeAuthenticationStore('isSignedIn', false)
-                this.handleChangeAuthenticationStore('isSigningUp', false)
-                this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
-            }).finally(() => {
-                this.handleChangeAuthenticationStore('isSigningUp', false)
-                console.log('finally signed up')
-            })
+            console.log(error)
+            this.handleChangeAuthenticationStore('signUpFailed', true)
+            this.handleChangeAuthenticationStore('isSignedIn', false)
+            this.handleChangeAuthenticationStore('isSigningUp', false)
+            this.handleChangeAuthenticationStore('errorMessage', this.ERRORS[error.code])
+        }).finally(() => {
+            this.handleChangeAuthenticationStore('isSigningUp', false)
+            commonStore.handleCommonStore('isLoading', false)
+            console.log('finally signed up')
+        })
     }
 
     signOut = async () => {
@@ -109,7 +117,7 @@ class AuthenticationStore {
 }
 
 // Instantiate the counter store.
-const authenticationStore = new AuthenticationStore();
+export const authenticationStore = new AuthenticationStore();
 // Create a React Context with the counter store instance.
 export const AuthenticationStoreContext = createContext(authenticationStore);
 export const useAuthenticationStore = () => useContext(AuthenticationStoreContext)

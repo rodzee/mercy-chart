@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase } from 'firebase/database';
+import { ref, getStorage } from "firebase/storage";
+
 import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -15,7 +17,7 @@ const firebaseConfig = {
     messagingSenderId: "914009742597",
     appId: "1:914009742597:web:4f6074e6b89a1a4bb7eb6c",
     measurementId: "G-QM1BF05RV3",
-    databaseURL: "https://mercy-chart-default-rtdb.firebaseio.com/"
+    databaseURL: "https://mercy-chart-default-rtdb.firebaseio.com/",
 };
 
 // Initialize Firebase
@@ -28,4 +30,6 @@ const FIREBASE_AUTH = initializeAuth(FIREBASE_APP, {
 // const FIREBASE_AUTH = getAuth(FIREBASE_APP);
 const FIREBASE_DB = getDatabase(FIREBASE_APP);
 
-export { FIREBASE_AUTH, FIREBASE_DB }
+const FIREBASE_STORAGE = getStorage(FIREBASE_APP);
+
+export { FIREBASE_AUTH, FIREBASE_DB, FIREBASE_STORAGE }

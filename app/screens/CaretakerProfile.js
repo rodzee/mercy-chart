@@ -1,4 +1,5 @@
 import React from 'react'
+import { observer } from "mobx-react";
 import { View, StyleSheet } from 'react-native'
 import { Text, PaperProvider, Avatar, IconButton } from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
@@ -36,7 +37,7 @@ const CaretakerProfile = () => {
     )
 }
 
-export default CaretakerProfile
+export default observer(CaretakerProfile);
 
 const styles = StyleSheet.create({
     root: {

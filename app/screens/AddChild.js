@@ -1,10 +1,26 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, {useEffect} from 'react'
+import { observer } from "mobx-react";
+import {View, StyleSheet, TouchableOpacity, ActivityIndicator} from 'react-native'
 import { PaperProvider, Button, Text, Avatar } from 'react-native-paper';
 import {FormBuilder} from "react-native-paper-form-builder";
+import * as ImagePicker from 'expo-image-picker';
 import {useForm} from "react-hook-form";
+import {useChildStore} from "../stores/ChildStore";
+import {useAuthenticationStore} from "../stores/AuthenticationStore";
+import {useStorageStore} from "../stores/StorageStore";
+import Child from "../stores/models/Child";
+import {useNavigation} from "@react-navigation/native";
 
-const AddChild = () => {
+const AddChild = ({userId}) => {
+    const {setChild} = useChildStore();
+    const { user } = useAuthenticationStore();
+    const { imageURL, pickImage } = useStorageStore();
+    const navigation = useNavigation();
+
+    useEffect( () => {
+        requestImagePermission()
+    }, []);
+
     const {
         control,
         setFocus,
@@ -16,16 +32,29 @@ const AddChild = () => {
         reValidateMode: 'onSubmit'
     });
 
+    const requestImagePermission = async () => {
+        const {
+            status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+            alert("Sorry, we need camera roll permissions to make this work!");
+        }
+    }
+
     return (
         <PaperProvider>
             <View style={styles.root}>
                 <View style={styles.container}>
                     <Text style={styles.header}>Add Child</Text>
-                    <Avatar.Image
-                        size={120}
-                        style={{ alignSelf: 'center', marginBottom: 30 }}
-                        source={require('../../assets/icon.png')}
-                    />
+                    <TouchableOpacity
+                        style={{alignSelf: 'center', borderRadius: 50}}
+                        title="Pick an image from camera roll" onPress={pickImage}>
+                        <Avatar.Image
+                            size={120}
+                            style={{ alignSelf: 'center', marginBottom: 30 }}
+                            source={imageURL !== null ? {uri: imageURL} : require('../../assets/icon.png')}
+                        />
+                    </TouchableOpacity>
                     <FormBuilder
                         control={control}
                         setFocus={setFocus}
@@ -53,8 +82,9 @@ const AddChild = () => {
                         buttonColor='#F19336'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginTop: 20 }}
-                        onPress={handleSubmit(({name}) => {
-                            console.log(name)
+                        onPress={handleSubmit(async ({name}) => {
+                            await setChild(user?.uid, new Child({name}))
+                            navigation.navigate('ChildProfile')
                         })}>
                         Add
                     </Button>
@@ -64,7 +94,7 @@ const AddChild = () => {
     )
 }
 
-export default AddChild
+export default observer(AddChild)
 
 const styles = StyleSheet.create({
     root: {

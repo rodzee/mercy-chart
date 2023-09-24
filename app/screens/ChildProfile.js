@@ -1,10 +1,22 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import { observer } from "mobx-react";
 import { View, StyleSheet } from 'react-native'
 import {Text, PaperProvider, Avatar, IconButton} from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
+import {useChildStore} from "../stores/ChildStore";
+import {useAuthenticationStore} from "../stores/AuthenticationStore";
 
 const ChildProfile = () => {
     const navigation = useNavigation();
+    const {getChildren, children} = useChildStore()
+    const {user} = useAuthenticationStore();
+
+    useEffect(() => {
+        const func = async () => {
+            await getChildren(user.uid)
+        }
+        func();
+    }, [user.id]);
 
     return (
         <PaperProvider>
@@ -20,15 +32,16 @@ const ChildProfile = () => {
                         />
                     </View>
                     <View style={styles.profilesContainer}>
-                        <View style={styles.profile} >
-                            <Avatar.Image source={require('../../assets/icon.png')} size={26} />
-                            <Text style={styles.profileTxt}>Lorenzo</Text>
-                            <IconButton icon='chevron-right' />
-                        </View>
-                        <View style={styles.profile} >
-                            <Avatar.Image source={require('../../assets/icon.png')} size={26} />
-                            <Text style={styles.profileTxt}>Julie</Text>
-                            <IconButton icon='chevron-right' />
+                        <View style={styles.profile}>
+                            {
+                                children.map(child => (
+                                    <View style={styles.child} key={child.uid}>
+                                        <Avatar.Image source={child.avatar !== null ? {uri: child.avatarURL} : require('../../assets/icon.png')} size={26} />
+                                        <Text style={styles.profileTxt}>{child.name}</Text>
+                                        <IconButton icon='chevron-right' />
+                                    </View>
+                                ))
+                            }
                         </View>
                     </View>
                 </View>
@@ -37,7 +50,7 @@ const ChildProfile = () => {
     )
 }
 
-export default ChildProfile
+export default observer(ChildProfile);
 
 const styles = StyleSheet.create({
     root: {
@@ -77,7 +90,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F5F5',
     },
     profile: {
-        flexDirection: 'row',
+        flexDirection: 'column',
+    },
+    child: {
+      flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
