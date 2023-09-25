@@ -2,8 +2,8 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 // import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import { PaperProvider, Button, Text } from 'react-native-paper';
-import {FormBuilder} from "react-native-paper-form-builder";
-import {useForm} from "react-hook-form";
+import { FormBuilder } from "react-native-paper-form-builder";
+import { useForm } from "react-hook-form";
 
 const AddCaretaker = () => {
     // const {
@@ -17,7 +17,7 @@ const AddCaretaker = () => {
         control,
         setFocus,
         handleSubmit,
-        formState: {errors}
+        formState: { errors }
     } = useForm({
         defaultValues: {
             name: '',
@@ -49,8 +49,8 @@ const AddCaretaker = () => {
                                 textInputProps: {
                                     label: 'Name',
                                     outlineStyle: { borderRadius: 20, borderColor: '#fff', backgroundColor: '#F5F5F5' },
-                                    selectionColor:'#F19336',
-                                    activeOutlineColor:'#757575'
+                                    selectionColor: '#F19336',
+                                    activeOutlineColor: '#757575'
                                 },
                             },
                             {
@@ -70,8 +70,8 @@ const AddCaretaker = () => {
                                 textInputProps: {
                                     label: 'Email',
                                     outlineStyle: { borderRadius: 20, borderColor: '#fff', backgroundColor: '#F5F5F5' },
-                                    selectionColor:'#F19336',
-                                    activeOutlineColor:'#757575'
+                                    selectionColor: '#F19336',
+                                    activeOutlineColor: '#757575'
                                 },
                             },
                             {
@@ -91,8 +91,8 @@ const AddCaretaker = () => {
                                 textInputProps: {
                                     label: 'Confirm Email',
                                     outlineStyle: { borderRadius: 20, borderColor: '#fff', backgroundColor: '#F5F5F5' },
-                                    selectionColor:'#F19336',
-                                    activeOutlineColor:'#757575'
+                                    selectionColor: '#F19336',
+                                    activeOutlineColor: '#757575'
                                 },
                             },
                         ]}
@@ -102,10 +102,19 @@ const AddCaretaker = () => {
                         buttonColor='#F19336'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginTop: 20 }}
-                        onPress={handleSubmit(({name, email}) => {
+                        onPress={handleSubmit(({ name, email }) => {
                             console.log(name, email)
                         })}>
-                    >Add</Button>
+                        Add
+                    </Button>
+                    <Button
+                        mode="contained"
+                        buttonColor='#757575'
+                        labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
+                        style={{ marginTop: 20 }}
+                        onPress={() => { }}>
+                        Cancel
+                    </Button>
                 </View>
             </View>
         </PaperProvider>
@@ -121,7 +130,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     container: {
-        flex: 1,
         margin: 30,
         padding: 13,
         justifyContent: 'center',

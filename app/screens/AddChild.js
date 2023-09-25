@@ -93,12 +93,21 @@ const AddChild = ({ userId }) => {
                         mode="contained"
                         buttonColor='#F19336'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
-                        style={{ marginTop: 20, paddingVertical: 4 }}
+                        style={{ marginVertical: 20, paddingVertical: 4 }}
                         onPress={handleSubmit(async ({ name }) => {
                             await setChild(user?.uid, new Child({ name }))
                             navigation.navigate('ChildProfile')
                         })}>
                         Add
+                    </Button>
+
+                    <Button
+                        mode="contained"
+                        buttonColor='#757575'
+                        labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
+                        style={{ marginBottom: 20, paddingVertical: 4 }}
+                        onPress={navigation.navigate('')}>
+                        Cancel
                     </Button>
                 </View>
             </View>
@@ -115,7 +124,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     container: {
-        height: '60%',
         margin: 30,
         padding: 13,
         justifyContent: 'center',
