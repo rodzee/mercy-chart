@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { observer } from "mobx-react";
+import { View } from 'react-native'
 
 // LIB IMPORTS //
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,7 +51,6 @@ const App = () => {
                     <Tab.Navigator screenOptions={({ route }) => ({
                         tabBarIcon: ({ focused, color, size }) => {
                             let iconName;
-
                             switch (route.name) {
                                 case 'History':
                                     iconName = 'history';
@@ -64,6 +64,7 @@ const App = () => {
 
                             return <MaterialIcons name={iconName} size={size} color={color} />;
                         },
+                        tabBarStyle: { paddintBottom: 20, paddingTop: 10 },
                         tabBarActiveTintColor: '#D92D00',
                         tabBarInactiveTintColor: 'gray',
                         headerShown: false
