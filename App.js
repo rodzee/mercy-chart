@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
 import { observer } from "mobx-react";
 
 // LIB IMPORTS //
@@ -16,13 +15,13 @@ import HomeStackScreen from "./app/stacks/HomeStackScreen";
 import HistoryStackScreen from "./app/stacks/HistoryStackScreen";
 import SettingsStackScreen from "./app/stacks/SettingsStackScreen";
 import AuthenticationStackScreen from "./app/stacks/AuthenticationStackScreen";
-import {useCommonStore} from "./app/stores/CommonStore";
+import { useCommonStore } from "./app/stores/CommonStore";
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
     const authStore = useAuthenticationStore();
-    const {isLoading} = useCommonStore();
+    const { isLoading } = useCommonStore();
     const { handleChangeAuthenticationStore, isSignedIn } = authStore;
     const auth = getAuth();
 
@@ -45,32 +44,31 @@ const App = () => {
                     visible={isLoading}
                     textContent={'Loading...'}
                     cancelable
-                    textStyle={{color: '#F19336'}}
+                    textStyle={{ color: '#F19336' }}
                 />
-                { isSignedIn ?
-                    <Tab.Navigator screenOptions={({route}) => ({
-                       tabBarIcon: ({focused, color, size}) => {
-                           let iconName;
+                {isSignedIn ?
+                    <Tab.Navigator screenOptions={({ route }) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            let iconName;
 
-                           switch (route.name) {
-                               case 'History':
-                                   iconName = 'history';
-                                   break;
-                               case 'Settings':
-                                   iconName = 'settings';
-                                   break;
-                               default:
-                                   iconName = 'home';
-                           }
+                            switch (route.name) {
+                                case 'History':
+                                    iconName = 'history';
+                                    break;
+                                case 'Settings':
+                                    iconName = 'settings';
+                                    break;
+                                default:
+                                    iconName = 'home';
+                            }
 
-                           return <MaterialIcons name={iconName} size={size} color={color} />;
-                       },
-                        tabBarActiveTintColor: 'tomato',
+                            return <MaterialIcons name={iconName} size={size} color={color} />;
+                        },
+                        tabBarActiveTintColor: '#D92D00',
                         tabBarInactiveTintColor: 'gray',
                         headerShown: false
                     })}
-
-                        >
+                    >
                         <Tab.Screen name="Home" component={HomeStackScreen} />
                         <Tab.Screen name="History" component={HistoryStackScreen} />
                         <Tab.Screen name="Settings" component={SettingsStackScreen} />
@@ -83,23 +81,3 @@ const App = () => {
 }
 
 export default observer(App)
-
-const styles = StyleSheet.create({
-    header: {
-        headerStyle: {
-            backgroundColor: '#F1E6E0',
-        },
-        headerShown: false,
-    },
-
-    headerWithNav: {
-        headerStyle: {
-            backgroundColor: '#F1E6E0',
-        },
-        headerShadowVisible: false,
-        headerBackTitleVisible: true,
-        headerTintColor: '#F19336',
-        title: null,
-    }
-
-})
