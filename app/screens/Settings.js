@@ -1,16 +1,25 @@
 import * as React from 'react';
-import { observer } from "mobx-react";
 import { StyleSheet, View, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Button, PaperProvider, Text } from 'react-native-paper';
+import { Modal, Portal, Button, PaperProvider, Text } from 'react-native-paper';
 import { useAuthenticationStore } from "../stores/AuthenticationStore";
+import { observer } from 'mobx-react';
 
 const Settings = () => {
+    const [modalVisible, setModalVisible] = React.useState()
     const { signOut } = useAuthenticationStore();
     const navigation = useNavigation();
-
+    const showModalDelete = () => setModalVisible(true);
+    const hideModalDelete = () => setModalVisible(false);
     return (
         <PaperProvider>
+            <Portal>
+                <Modal visible={modalVisible} onDismiss={hideModalDelete} style={styles.modalContainer} >
+                    <Text style={styles.modalTxt}>Are you sure you want to delete your account?</Text>
+                    <Button mode='contained' buttonColor='#757575' >Yes</Button>
+                    <Button mode='contained' buttonColor='#F19336' style={{ marginTop: 15 }}>No</Button>
+                </Modal>
+            </Portal>
             <View style={styles.root}>
                 <View style={styles.container}>
                     <Text style={styles.header}>Profiles</Text>
@@ -44,7 +53,7 @@ const Settings = () => {
                         buttonColor='#757575'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginTop: 10, paddingVertical: 3 }}
-                        onPress={() => { }}>
+                        onPress={showModalDelete}>
                         Delete Account
                     </Button>
                 </View>
@@ -85,4 +94,17 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: '#F5F5F5',
     },
+    modalContainer: {
+        height: 250,
+        padding: 15,
+        marginHorizontal: 13,
+        borderRadius: 20,
+        backgroundColor: '#F5F5F5',
+    },
+    modalTxt: {
+        fontFamily: 'OpenSans-Regular',
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 20,
+    }
 })
