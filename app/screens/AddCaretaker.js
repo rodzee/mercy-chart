@@ -1,18 +1,13 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-// import { useAuthenticationStore } from "../stores/AuthenticationStore";
 import { PaperProvider, Button, Text } from 'react-native-paper';
 import { FormBuilder } from "react-native-paper-form-builder";
 import { useForm } from "react-hook-form";
+import { useNavigation } from '@react-navigation/native';
+
 
 const AddCaretaker = () => {
-    // const {
-    //     name,
-    //     email,
-    //     emailConfirmation,
-    //     errorMessage,
-    // } = useAuthenticationStore();
-
+    const navigation = useNavigation();
     const {
         control,
         setFocus,
@@ -112,7 +107,7 @@ const AddCaretaker = () => {
                         buttonColor='#757575'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginTop: 20 }}
-                        onPress={() => { }}>
+                        onPress={() => { navigation.goBack(); }}>
                         Cancel
                     </Button>
                 </View>
