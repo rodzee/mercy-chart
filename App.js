@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { observer } from "mobx-react";
-import { View } from 'react-native'
 
 // LIB IMPORTS //
 import { NavigationContainer } from '@react-navigation/native';
@@ -64,7 +63,8 @@ const App = () => {
 
                             return <MaterialIcons name={iconName} size={size} color={color} />;
                         },
-                        tabBarStyle: { paddintBottom: 20, paddingTop: 10 },
+                        tabBarStyle: { paddintBottom: 20, paddingTop: 10, height: 70 },
+                        tabBarLabelStyle: { paddingBottom: 15 },
                         tabBarActiveTintColor: '#D92D00',
                         tabBarInactiveTintColor: 'gray',
                         headerShown: false
