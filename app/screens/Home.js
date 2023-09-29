@@ -1,11 +1,52 @@
 import * as React from 'react';
 import { observer } from "mobx-react";
 import { StyleSheet, View, Pressable } from 'react-native';
-
+import {Gesture, GestureDetector} from "react-native-gesture-handler";
 import { IconButton, PaperProvider, Text } from 'react-native-paper';
 import TopBar from '../components/TopBar'
+import {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
+import SwipeButton from 'rn-swipe-button';
 
 const Chart = () => {
+    const isPressed = useSharedValue(false);
+    const offset = useSharedValue({ x: 0, y: 0 });
+
+    const animatedStyles = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { translateX: offset.value.x },
+                { translateY: offset.value.y },
+                { scale: withSpring(isPressed.value ? 1.2 : 1) },
+            ],
+            backgroundColor: isPressed.value ? 'yellow' : 'blue',
+        };
+    });
+
+    const doubleTap = Gesture.Tap()
+        .numberOfTaps(2)
+        .onStart(() => {
+            console.log('Yay, double tap!');
+        });
+
+    const slideToRemoveGesture = Gesture.Pan()
+        .onBegin(() => {
+            'worklet';
+            isPressed.value = true;
+        })
+        .onChange((e) => {
+            'worklet';
+            offset.value = {
+                x: e.changeX + offset.value.x,
+                y: e.changeY + offset.value.y,
+            };
+        })
+        .onFinalize(() => {
+            'worklet';
+            isPressed.value = false;
+        });
+
+    const RemoveIcon = () => <IconButton icon='minus-circle' size={75} iconColor="#757575"/>
+
     return (
         <PaperProvider>
             <TopBar />
@@ -30,17 +71,40 @@ const Chart = () => {
                             <IconButton icon='alpha-x-circle' size={60} iconColor='#FFF' />
                             <IconButton icon='alpha-x-circle' size={60} iconColor='#FFF' />
                         </View>
-                        <Pressable style={styles.tapContainer} onPress={() => { }}>
-                            <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 28, color: '#FFF' }}>Double Tap</Text>
-                            <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 14, color: '#FFF' }}>to add a strike</Text>
-                        </Pressable>
+                        <GestureDetector gesture={doubleTap}>
+                            <Pressable style={styles.tapContainer} onPress={() => { }}>
+                                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 28, color: '#FFF' }}>Double Tap</Text>
+                                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 14, color: '#FFF' }}>to add a strike</Text>
+                            </Pressable>
+                        </GestureDetector>
                     </View>
-                </View>
-                <View style={styles.removeContainer}>
-                    <View style={styles.removeItems}>
-                        <IconButton icon='minus-circle' size={40} iconColor='#757575' style={{ marginLeft: -10 }} />
-                        <Text style={styles.removeTxt}> slide to remove one strike</Text>
-                    </View>
+                    <SwipeButton
+                        containerStyles={{
+                            height: 35,
+                            alignItems: 'stretch',
+                            borderRadius: 20,
+                            marginTop: '15%',
+                            backgroundColor: '#FFF',
+                        }}
+                        thumbIconStyles={{
+                            width: 75,
+                            height: 75,
+                        }}
+                        thumbIconBackgroundColor="#F1E6E0"
+                        thumbIconComponent={RemoveIcon}
+                        thumbIconBorderColor="#757575"
+                        railBackgroundColor="#F1E6E0"
+                        railBorderColor="#F1E6E0"
+                        railFillBackgroundColor="#F19336"
+                        railFillBorderColor="#F1E6E0"
+                        resetAfterSuccessAnimDelay={3}
+                        resetAfterSuccessAnimDuration={3}
+                        screenReaderEnabled
+                        shouldResetAfterSuccess
+                        height={30}
+                        titleColor="#757575"
+                        title="Slide to remove one strike"
+                    />
                 </View>
             </View>
         </PaperProvider>
@@ -56,7 +120,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     container: {
-        // flex: 1,
         height: '80%',
         marginTop: 50,
         marginHorizontal: 30,
@@ -91,22 +154,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F5B372',
     },
-    removeContainer: {
-        marginBottom: '10%',
-        marginHorizontal: 15,
-    },
-    removeItems: {
-        height: 25,
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: 20,
-        marginHorizontal: 15,
-        marginTop: '5%',
-        backgroundColor: '#FFF',
-    },
-    removeTxt: {
-        marginLeft: '7%',
-        fontFamily: 'OpenSans-Bold',
-        color: '#757575'
-    }
 })

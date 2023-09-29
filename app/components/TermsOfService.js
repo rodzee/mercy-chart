@@ -21,7 +21,6 @@ const TermsOfService = (
     });
     const errorMessage = formState?.errors?.['termsOfService']?.message;
 
-
     return (
         <View style={styles.termsOfCondition}>
             <View style={styles.container}>
