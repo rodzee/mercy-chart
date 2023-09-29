@@ -1,15 +1,15 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { observer } from "mobx-react";
 import { View, StyleSheet } from 'react-native'
-import {Text, PaperProvider, Avatar, IconButton} from 'react-native-paper';
-import {useNavigation} from "@react-navigation/native";
-import {useChildStore} from "../stores/ChildStore";
-import {useAuthenticationStore} from "../stores/AuthenticationStore";
+import { Text, PaperProvider, Avatar, IconButton } from 'react-native-paper';
+import { useNavigation } from "@react-navigation/native";
+import { useChildStore } from "../stores/ChildStore";
+import { useAuthenticationStore } from "../stores/AuthenticationStore";
 
 const ChildProfile = () => {
     const navigation = useNavigation();
-    const {getChildren, children} = useChildStore()
-    const {user} = useAuthenticationStore();
+    const { getChildren, children } = useChildStore()
+    const { user } = useAuthenticationStore();
 
     useEffect(() => {
         func();
@@ -28,7 +28,7 @@ const ChildProfile = () => {
                         <IconButton
                             icon='account-plus'
                             iconColor='#757575'
-                            style={{paddingTop: 14}}
+                            style={{ paddingTop: 14 }}
                             onPress={() => navigation.navigate('AddChild')}
                         />
                     </View>
@@ -37,7 +37,7 @@ const ChildProfile = () => {
                             {
                                 children.map(child => (
                                     <View style={styles.child} key={child.uid}>
-                                        <Avatar.Image source={child.avatar !== null ? {uri: child.avatarURL} : require('../../assets/icon.png')} size={26} />
+                                        <Avatar.Image source={child.avatar !== null ? { uri: child.avatarURL } : require('../../assets/icon.png')} size={26} />
                                         <Text style={styles.profileTxt}>{child.name}</Text>
                                         <IconButton icon='chevron-right' />
                                     </View>
@@ -94,11 +94,12 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     child: {
-      flexDirection: 'row',
+        flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
     profileTxt: {
+
         fontFamily: 'OpenSans-Bold',
         fontSize: 16,
         color: '#757575',

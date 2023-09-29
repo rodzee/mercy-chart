@@ -106,7 +106,7 @@ const AddChild = ({ userId }) => {
                         buttonColor='#757575'
                         labelStyle={{ fontFamily: 'OpenSans-Bold', fontSize: 16 }}
                         style={{ marginBottom: 20, paddingVertical: 4 }}
-                        onPress={navigation.navigate('')}>
+                        onPress={() => { navigation.goBack() }}>
                         Cancel
                     </Button>
                 </View>
