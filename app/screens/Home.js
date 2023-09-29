@@ -67,9 +67,9 @@ const Chart = () => {
                     />
                     <View style={styles.strikesContainer}>
                         <View style={styles.xContainer}>
-                            <IconButton icon='alpha-x-circle' size={60} iconColor='#FFF' />
-                            <IconButton icon='alpha-x-circle' size={60} iconColor='#FFF' />
-                            <IconButton icon='alpha-x-circle' size={60} iconColor='#FFF' />
+                            <IconButton icon='close-circle' size={60} iconColor='#FFF' />
+                            <IconButton icon='circle' size={60} iconColor='#FFF' />
+                            <IconButton icon='circle' size={60} iconColor='#FFF' />
                         </View>
                         <GestureDetector gesture={doubleTap}>
                             <Pressable style={styles.tapContainer} onPress={() => { }}>
