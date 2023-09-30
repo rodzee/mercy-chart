@@ -8,16 +8,21 @@ import SwipeButton from 'rn-swipe-button';
 import {useStrikeStore} from "../stores/StrikeStore";
 import {useEffect} from "react";
 import {useChildStore} from "../stores/ChildStore";
+import {useAuthenticationStore} from "../stores/AuthenticationStore";
 
 const Chart = () => {
     const strikeStore = useStrikeStore()
     const childStore = useChildStore();
+    const authenticationStore = useAuthenticationStore();
+    const { user } = authenticationStore;
+    const { child, getChildren} = childStore;
     const {
-        getStrikes,
         strikes,
-        handleChangeStrikeStore,
+        strikeIndex,
+        getStrikes,
         setStrike,
-        strikeIndex
+        deleteStrike,
+        handleChangeStrikeStore,
     } = strikeStore
 
     const doubleTap = Gesture.Tap()
@@ -26,13 +31,15 @@ const Chart = () => {
         .runOnJS(true)
         .onStart( () => {
             handleChangeStrikeStore('strikeIndex', strikeIndex + 1)
-            setStrike(childStore.child.uid)
+            setStrike(child.uid)
         });
 
     const RemoveIcon = () => <IconButton icon='minus-circle' size={75} iconColor="#757575"/>
 
     useEffect(() => {
-        getStrikes(childStore.child.uid)
+        getChildren(user.uid).then(() => {
+            getStrikes(child.uid)
+        })
     }, []);
 
     return (
@@ -105,6 +112,9 @@ const Chart = () => {
                         resetAfterSuccessAnimDuration={3}
                         screenReaderEnabled
                         shouldResetAfterSuccess
+                        onSwipeSuccess={() => {
+                            deleteStrike()
+                        }}
                         height={30}
                         titleColor="#757575"
                         title="Slide to remove one strike"

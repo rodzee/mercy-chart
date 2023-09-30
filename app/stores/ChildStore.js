@@ -1,5 +1,5 @@
 import React from 'react';
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
 import {get, ref, set} from "firebase/database";
 import {FIREBASE_DB} from "../config/firebase.config";
 import {storageStore} from './StorageStore'
@@ -18,17 +18,22 @@ class ChildStore {
     getChildren = async (userId) => {
         try {
             commonStore.handleCommonStore('isLoading', true)
-            const childrenSnapshot = await get(ref(FIREBASE_DB, 'children'));
-            if (Object.values(childrenSnapshot.val()).length > 0) {
-                this.handleChangeChildStore('child', Object.values(childrenSnapshot.val())[0])
-            }
-            this.handleChangeChildStore('children',
-                Object.values(childrenSnapshot.val()).filter(child => {
-                    if (child.userId === userId) {
-                        return child
+            await get(ref(FIREBASE_DB, 'children'))
+                .then(childrenSnapshot => {
+                    if (Object.values(childrenSnapshot.val()).length > 0) {
+                        runInAction(() => {
+                            this.child = Object.values(childrenSnapshot.val())[0]
+                        })
                     }
+                    runInAction(() => {
+                        this.children = Object.values(childrenSnapshot.val()).filter(child => {
+                                if (child.userId === userId) {
+                                    console.log('3')
+                                    return child
+                                }
+                            })
+                    })
                 })
-            )
         } catch (error) {
             console.log('error', error)
         } finally {
