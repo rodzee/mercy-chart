@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
+import React, { useEffect } from 'react';
 import { observer } from "mobx-react";
 import { NavigationContainer } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';

@@ -4,48 +4,36 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
 import { IconButton, PaperProvider, Text } from 'react-native-paper';
 import TopBar from '../components/TopBar'
-import {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
 import SwipeButton from 'rn-swipe-button';
+import {useStrikeStore} from "../stores/StrikeStore";
+import {useEffect} from "react";
+import {useChildStore} from "../stores/ChildStore";
 
 const Chart = () => {
-    const isPressed = useSharedValue(false);
-    const offset = useSharedValue({ x: 0, y: 0 });
-
-    const animatedStyles = useAnimatedStyle(() => {
-        return {
-            transform: [
-                { translateX: offset.value.x },
-                { translateY: offset.value.y },
-                { scale: withSpring(isPressed.value ? 1.2 : 1) },
-            ],
-            backgroundColor: isPressed.value ? 'yellow' : 'blue',
-        };
-    });
+    const strikeStore = useStrikeStore()
+    const childStore = useChildStore();
+    const {
+        getStrikes,
+        strikes,
+        handleChangeStrikeStore,
+        setStrike,
+        strikeIndex
+    } = strikeStore
 
     const doubleTap = Gesture.Tap()
         .numberOfTaps(2)
-        .onStart(() => {
-            console.log('Yay, double tap!');
-        });
-
-    const slideToRemoveGesture = Gesture.Pan()
-        .onBegin(() => {
-            'worklet';
-            isPressed.value = true;
-        })
-        .onChange((e) => {
-            'worklet';
-            offset.value = {
-                x: e.changeX + offset.value.x,
-                y: e.changeY + offset.value.y,
-            };
-        })
-        .onFinalize(() => {
-            'worklet';
-            isPressed.value = false;
+        .shouldCancelWhenOutside(true)
+        .runOnJS(true)
+        .onStart( () => {
+            handleChangeStrikeStore('strikeIndex', strikeIndex + 1)
+            setStrike(childStore.child.uid)
         });
 
     const RemoveIcon = () => <IconButton icon='minus-circle' size={75} iconColor="#757575"/>
+
+    useEffect(() => {
+        getStrikes(childStore.child.uid)
+    }, []);
 
     return (
         <PaperProvider>
@@ -63,13 +51,29 @@ const Chart = () => {
                         icon='gift'
                         size={120}
                         iconColor='#FFD426'
-                        style={{ flex: 1, justifyContent: 'center', width: '100%' }}
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            width: '100%',
+                            alignItems: 'center'
+                        }}
                     />
                     <View style={styles.strikesContainer}>
                         <View style={styles.xContainer}>
-                            <IconButton icon='close-circle' size={60} iconColor='#FFF' />
-                            <IconButton icon='circle' size={60} iconColor='#FFF' />
-                            <IconButton icon='circle' size={60} iconColor='#FFF' />
+                            {
+                                strikes &&
+                                strikes.length > 0 &&
+                                strikes.map(strike => (
+                                    <IconButton
+                                        key={strike?.uid}
+                                        index={strike?.index}
+                                        id={strike?.uid}
+                                        icon={strike.strike ? 'close-circle-outline' : strike?.icon}
+                                        size={60}
+                                        iconColor='#FFF'
+                                    />
+                                ))
+                            }
                         </View>
                         <GestureDetector gesture={doubleTap}>
                             <Pressable style={styles.tapContainer} onPress={() => { }}>

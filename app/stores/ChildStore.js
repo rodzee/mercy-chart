@@ -4,9 +4,12 @@ import {get, ref, set} from "firebase/database";
 import {FIREBASE_DB} from "../config/firebase.config";
 import {storageStore} from './StorageStore'
 import {commonStore} from "./CommonStore";
+import Child from "./models/Child";
 
 class ChildStore {
     children = []
+
+    child = {}
 
     constructor() {
         makeAutoObservable(this)
@@ -16,6 +19,9 @@ class ChildStore {
         try {
             commonStore.handleCommonStore('isLoading', true)
             const childrenSnapshot = await get(ref(FIREBASE_DB, 'children'));
+            if (Object.values(childrenSnapshot.val()).length > 0) {
+                this.handleChangeChildStore('child', Object.values(childrenSnapshot.val())[0])
+            }
             this.handleChangeChildStore('children',
                 Object.values(childrenSnapshot.val()).filter(child => {
                     if (child.userId === userId) {
@@ -30,10 +36,10 @@ class ChildStore {
         }
     }
 
-    getChild = async (userId) => {
+    getChild = async (childId) => {
         try {
             commonStore.handleCommonStore('isLoading', true)
-            return await get(ref(FIREBASE_DB, `children/${userId}`))
+            this.handleChangeChildStore('child' , await get(ref(FIREBASE_DB, `children/${childId}`)))
         } catch (error) {
             console.log('error', error)
         } finally {
@@ -47,12 +53,17 @@ class ChildStore {
             await storageStore.uploadImageAsync(child.uid, storageStore.imageURL)
                 .then(async (avatarURL) => {
                     if (avatarURL) {
-                        await set(ref(FIREBASE_DB, `children/${child.uid}/`), {
+                        const _child = new Child({
                             uid: child.uid,
                             name: child.name,
                             userId: userId,
                             avatarURL
                         })
+                        await set(ref(FIREBASE_DB, `children/${child.uid}/`),
+                            { ..._child })
+                            .then(() => {
+                                this.handleChangeChildStore('child', _child)
+                            })
                     }
                 })
         } catch (error) {
