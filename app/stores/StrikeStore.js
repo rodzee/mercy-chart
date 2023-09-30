@@ -1,5 +1,5 @@
 import React from 'react';
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
 import {ref, set, get} from "firebase/database";
 import {FIREBASE_DB} from "../config/firebase.config";
 import {commonStore} from "./CommonStore";
@@ -21,7 +21,9 @@ class StrikeStore {
                         this.handleChangeStrikeStore('strikes', snap.val())
                     } else {
                         for (let i = 0; i < 3; i++) {
-                            this.strikes.push(new Strike({index: i}))
+                            runInAction(() => {
+                                this.strikes.push(new Strike({index: i}))
+                            })
                         }
                     }
                 })
@@ -35,12 +37,14 @@ class StrikeStore {
     setStrike = async (childId) => {
         try {
             commonStore.handleCommonStore('isLoading', true)
-            this.strikes = this.strikes.map((s, i) => {
-                if (this.strikeIndex === i) {
-                    s.strike = true
-                }
-                return s;
-            })
+            this.handleChangeStrikeStore('strikes',
+                this.strikes.map((s, i) => {
+                    if (this.strikeIndex === i) {
+                        s.strike = true
+                    }
+                    return s;
+                })
+            )
             await set(ref(FIREBASE_DB, `strikes/${childId}`), this.strikes)
         } catch (error) {
             console.log('error', error)
@@ -49,11 +53,22 @@ class StrikeStore {
         }
     }
 
-    deleteStrike = async (child) => {
+    deleteStrike = async (childId) => {
         try {
-            // update child
-        } catch (e) {
-            console.log('UpdateUserError ------> ', e.message);
+            commonStore.handleCommonStore('isLoading', true)
+            this.handleChangeStrikeStore('strikes',
+                this.strikes.map((s, i) => {
+                    if (this.strikeIndex === i) {
+                        s.strike = false
+                    }
+                    return s;
+                })
+            )
+            await set(ref(FIREBASE_DB, `strikes/${childId}`), this.strikes)
+        } catch (error) {
+            console.log('error', error)
+        } finally {
+            commonStore.handleCommonStore('isLoading', false)
         }
     }
 
